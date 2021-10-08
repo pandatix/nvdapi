@@ -1,6 +1,6 @@
 # NVD API
 
-[![reference](https://godoc.org/github.com/PandatiX/nvdapi/v5?status.svg=)](https://pkg.go.dev/github.com/PandatiX/nvdapi)
+[![reference](https://godoc.org/github.com/Pandatix/nvdapi/v5?status.svg=)](https://pkg.go.dev/github.com/Pandatix/nvdapi)
 [![go report](https://goreportcard.com/badge/github.com/PandatiX/nvdapi)](https://goreportcard.com/report/github.com/PandatiX/nvdapi)
 [![codecov](https://codecov.io/gh/PandatiX/nvdapi/branch/master/graph/badge.svg)](https://codecov.io/gh/PandatiX/nvdapi)
 [![CI](https://github.com/PandatiX/nvdapi/actions/workflows/ci.yaml/badge.svg)](https://github.com/PandatiX/nvdapi/actions?query=workflow%3Aci+)
