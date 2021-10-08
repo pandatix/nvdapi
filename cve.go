@@ -9,15 +9,18 @@ import (
 	"github.com/gorilla/schema"
 )
 
+// GetCVEParams combines the parameters needed for GetCVE.
 type GetCVEParams struct {
 	CVE    string `schema:"-"`
 	AddOns *bool  `schema:"addOns,omitempty"`
 }
 
+// GetCVE fetches and returns the CVE given the parameters.
 func GetCVE(client HTTPClient, params GetCVEParams) (*CVEResponse, error) {
 	return getEndp(client, "cve/1.0/"+params.CVE, params)
 }
 
+// GetCVEsParams combines the parameters needed for GetCVEs.
 type GetCVEsParams struct {
 	StartIndex               *int    `schema:"startIndex,omitempty"`
 	ResultsPerPage           *int    `schema:"resultsPerPage,omitempty"`
@@ -38,6 +41,7 @@ type GetCVEsParams struct {
 	AddOns                   *bool   `schema:"addOns,omitempty"`
 }
 
+// GetCVEs fetches and returns the CVEs given the parameters.
 func GetCVEs(client HTTPClient, params GetCVEsParams) (*CVEResponse, error) {
 	return getEndp(client, "cves/1.0", params)
 }
