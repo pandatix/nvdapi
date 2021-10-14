@@ -7,7 +7,7 @@ import (
 	"io"
 	"net/http"
 
-	"github.com/Pandatix/nvdapi"
+	"github.com/pandatix/nvdapi"
 )
 
 type MdwClient struct {

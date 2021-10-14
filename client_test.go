@@ -9,7 +9,7 @@ import (
 	"reflect"
 	"testing"
 
-	"github.com/Pandatix/nvdapi"
+	"github.com/pandatix/nvdapi"
 )
 
 var (

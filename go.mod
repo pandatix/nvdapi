@@ -1,4 +1,4 @@
-module github.com/Pandatix/nvdapi
+module github.com/pandatix/nvdapi
 
 go 1.17
 

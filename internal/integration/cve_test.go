@@ -8,7 +8,7 @@ import (
 	"encoding/json"
 	"testing"
 
-	"github.com/Pandatix/nvdapi"
+	"github.com/pandatix/nvdapi"
 	"github.com/stretchr/testify/assert"
 )
 
