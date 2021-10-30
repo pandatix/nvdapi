@@ -8,8 +8,8 @@
 The NVD API is an unofficial Go wrapper around the [NVD API](https://nvd.nist.gov/General/News/New-NVD-CVE-CPE-API-and-SOAP-Retirement).
 
 Supports:
- - [X] [CVE](https://csrc.nist.gov/CSRC/media/Projects/National-Vulnerability-Database/documents/web%20service%20documentation/Automation%20Support%20for%20CVE%20Retrieval.pdf)
- - [ ] [CPE](https://csrc.nist.gov/CSRC/media/Projects/National-Vulnerability-Database/documents/web%20service%20documentation/Automation%20Support%20for%20CPE%20Retrieval.pdf)
+ - [X] [CVE](https://nvd.nist.gov/developers/vulnerabilities)
+ - [ ] [CPE](https://nvd.nist.gov/developers/products)
 
 ## How to use
 

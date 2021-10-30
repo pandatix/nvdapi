@@ -9,10 +9,17 @@ import (
 	"github.com/gorilla/schema"
 )
 
+type AddOns string
+
+var (
+	DictionaryCPEs AddOns = "dictionaryCpes"
+)
+
 // GetCVEParams combines the parameters needed for GetCVE.
 type GetCVEParams struct {
-	CVE    string `schema:"-"`
-	AddOns *bool  `schema:"addOns,omitempty"`
+	CVE    string  `schema:"-"`
+	AddOns *AddOns `schema:"addOns,omitempty"`
+	APIKey *string `schema:"apiKey,omitempty"`
 }
 
 // GetCVE fetches and returns the CVE given the parameters.
@@ -22,23 +29,23 @@ func GetCVE(client HTTPClient, params GetCVEParams) (*CVEResponse, error) {
 
 // GetCVEsParams combines the parameters needed for GetCVEs.
 type GetCVEsParams struct {
-	StartIndex               *int    `schema:"startIndex,omitempty"`
-	ResultsPerPage           *int    `schema:"resultsPerPage,omitempty"`
-	PubStartDate             *string `schema:"pubStartDate,omitempty"`
-	PubEndDate               *string `schema:"pubEndDate,omitempty"`
+	AddOns                   *AddOns `schema:"addOns,omitempty"`
+	APIKey                   *string `schema:"apiKey,omitempty"`
+	CPEMatchString           *bool   `schema:"cpeMatchString,omitempty"`
+	CVSSV2Metrics            *bool   `schema:"cvssV2Metrics,omitempty"`
+	CVSSV2Severity           *bool   `schema:"cvssV2Severity,omitempty"`
+	CVSSV3Metrics            *bool   `schema:"cvssV3Metrics,omitempty"`
+	CVSSV3Severity           *bool   `schema:"cvssV3Severity,omitempty"`
+	CWEID                    *bool   `schema:"cweId,omitempty"`
+	IncludeMatchStringChange *bool   `schema:"includeMatchStringChange,omitempty"`
+	IsExactMatch             *bool   `schema:"isExactMatch,omitempty"`
+	Keyword                  *string `schema:"keyword,omitempty"`
 	ModStartDate             *string `schema:"modStartDate,omitempty"`
 	ModEndDate               *string `schema:"modEndDate,omitempty"`
-	IncludeMatchStringChange *bool   `schema:"includeMatchStringChange,omitempty"`
-	Keyword                  *string `schema:"keyword,omitempty"`
-	IsExactMatch             *bool   `schema:"isExactMatch,omitempty"`
-	CWEID                    *bool   `schema:"cweId,omitempty"`
-	CVSSV2Severity           *bool   `schema:"cvssV2Severity,omitempty"`
-	CVSSV3Severity           *bool   `schema:"cvssV3Severity,omitempty"`
-	CVSSV2Metrics            *bool   `schema:"cvssV2Metrics,omitempty"`
-	CVSSV3Metrics            *bool   `schema:"cvssV3Metrics,omitempty"`
-	CPEMatchString           *bool   `schema:"cpeMatchString,omitempty"`
-	CPEName                  *string `schema:"cpeName,omitempty"`
-	AddOns                   *bool   `schema:"addOns,omitempty"`
+	PubStartDate             *string `schema:"pubStartDate,omitempty"`
+	PubEndDate               *string `schema:"pubEndDate,omitempty"`
+	ResultsPerPage           *int    `schema:"resultsPerPage,omitempty"`
+	StartIndex               *int    `schema:"startIndex,omitempty"`
 }
 
 // GetCVEs fetches and returns the CVEs given the parameters.
