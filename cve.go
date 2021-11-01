@@ -13,6 +13,7 @@ type AddOns string
 
 var (
 	DictionaryCPEs AddOns = "dictionaryCpes"
+	CVEs           AddOns = "cves"
 )
 
 // GetCVEParams combines the parameters needed for GetCVE.
@@ -24,7 +25,12 @@ type GetCVEParams struct {
 
 // GetCVE fetches and returns the CVE given the parameters.
 func GetCVE(client HTTPClient, params GetCVEParams) (*CVEResponse, error) {
-	return getEndp(client, "cve/1.0/"+params.CVE, params)
+	resp := &CVEResponse{}
+	err := getEndp(client, "cve/1.0/"+params.CVE, params, resp)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
 }
 
 // GetCVEsParams combines the parameters needed for GetCVEs.
@@ -50,12 +56,17 @@ type GetCVEsParams struct {
 
 // GetCVEs fetches and returns the CVEs given the parameters.
 func GetCVEs(client HTTPClient, params GetCVEsParams) (*CVEResponse, error) {
-	return getEndp(client, "cves/1.0", params)
+	resp := &CVEResponse{}
+	err := getEndp(client, "cves/1.0", params, resp)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
 }
 
-func getEndp(client HTTPClient, endp string, params interface{}) (*CVEResponse, error) {
+func getEndp(client HTTPClient, endp string, params, dst interface{}) error {
 	if client == nil {
-		return nil, ErrNilClient
+		return ErrNilClient
 	}
 
 	// Build the request
@@ -67,25 +78,24 @@ func getEndp(client HTTPClient, endp string, params interface{}) (*CVEResponse, 
 	// Issue the request
 	res, err := client.Do(req)
 	if err != nil {
-		return nil, err
+		return err
 	}
 	defer res.Body.Close()
 	body, _ := io.ReadAll(res.Body)
 
 	// Check status code
 	if res.StatusCode != http.StatusOK {
-		return nil, &ErrUnexpectedStatus{
+		return &ErrUnexpectedStatus{
 			Body:       body,
 			StatusCode: res.StatusCode,
 		}
 	}
 
 	// Unmarshal response
-	var resp CVEResponse
-	err = json.Unmarshal(body, &resp)
+	err = json.Unmarshal(body, dst)
 	if err != nil {
-		return nil, err
+		return err
 	}
 
-	return &resp, nil
+	return nil
 }

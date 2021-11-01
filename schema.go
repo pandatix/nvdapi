@@ -2,13 +2,13 @@ package nvdapi
 
 type (
 	CVEResponse struct {
-		ResultsPerPage int    `json:"resultsPerPage"`
-		StartIndex     int    `json:"startIndex"`
-		TotalResults   int    `json:"totalResults"`
-		Result         Result `json:"result"`
+		ResultsPerPage int       `json:"resultsPerPage"`
+		StartIndex     int       `json:"startIndex"`
+		TotalResults   int       `json:"totalResults"`
+		Result         CVEResult `json:"result"`
 	}
 
-	Result struct {
+	CVEResult struct {
 		CVEDataType         string     `json:"CVE_data_type"`
 		CVEDataFormat       string     `json:"CVE_data_format"`
 		CVEDataVersion      string     `json:"CVE_data_version"`
@@ -81,7 +81,7 @@ type (
 	References struct {
 		// ReferenceData has a minimum of 0 and a maximum of 500
 		// items according to the NIST API schema.
-		ReferenceData []Reference `json:"reference_data"`
+		ReferenceData []CVEReference `json:"reference_data"`
 	}
 
 	Description struct {
@@ -106,7 +106,7 @@ type (
 		VersionAffected *string `json:"version_affected,omitempty"`
 	}
 
-	Reference struct {
+	CVEReference struct {
 		// URL has a maximum length of 500 characters according to the
 		// NIST API schema.
 		URL       string    `json:"url"`
@@ -141,18 +141,18 @@ type (
 	// CPEMatch is the CPE Match string or range as defined in the
 	// NIST API schema.
 	CPEMatch struct {
-		Vulnerable            bool       `json:"vulnerable"`
-		CPE22URI              *string    `json:"cpe22Uri,omitempty"`
-		CPE23URI              string     `json:"cpe23Uri"`
-		VersionStartExcluding *string    `json:"versionStartExcluding,omitempty"`
-		VersionStartIncluding *string    `json:"versionStartIncluding,omitempty"`
-		VersionEndExcluding   *string    `json:"versionEndExcluding,omitempty"`
-		VersionEndIncluding   *string    `json:"versionEndIncluding,omitempty"`
-		CPEName               *[]CPEName `json:"cpe_name,omitempty"`
+		Vulnerable            bool          `json:"vulnerable"`
+		CPE22URI              *string       `json:"cpe22Uri,omitempty"`
+		CPE23URI              string        `json:"cpe23Uri"`
+		VersionStartExcluding *string       `json:"versionStartExcluding,omitempty"`
+		VersionStartIncluding *string       `json:"versionStartIncluding,omitempty"`
+		VersionEndExcluding   *string       `json:"versionEndExcluding,omitempty"`
+		VersionEndIncluding   *string       `json:"versionEndIncluding,omitempty"`
+		CPEName               *[]CVECPEName `json:"cpe_name,omitempty"`
 	}
 
 	// CPEName is the CPE name as defined in the NIST API schema.
-	CPEName struct {
+	CVECPEName struct {
 		CPE22URI         *string `json:"cpe22Uri,omitempty"`
 		CPE23URI         string  `json:"cpe23Uri"`
 		LastModifiedDate *string `json:"lastModifiedDate,omitempty"`
@@ -242,4 +242,55 @@ type (
 		AvailabilityRequirement    *string  `json:"availabilityRequirement,omitempty"`
 		EnvironmentalScore         *float64 `json:"environmentalScore,omitempty"`
 	}
+
+	CPEResponse struct {
+		ResultsPerPage int       `json:"resultsPerPage"`
+		StartIndex     int       `json:"startIndex"`
+		TotalResults   int       `json:"totalResults"`
+		Result         CPEResult `json:"result"`
+	}
+
+	CPEResult struct {
+		DataType    string `json:"dataType"`
+		FeedVersion string `json:"feedVersion"`
+		// Number of CPE in this feed
+		CPECount int `json:"cpeCount"`
+		// Timestamp indicates when feed was generated
+		FeedTimestamp *string   `json:"feedTimestamp,omitempty"`
+		CPEs          []CPEName `json:"cpes"`
+	}
+
+	// CPE name
+	CPEName struct {
+		CPE23URI         string          `json:"cpe23Uri"`
+		LastModifiedDate string          `json:"lastModifiedDate"`
+		Deprecated       *bool           `json:"deprecated,omitempty"`
+		DeprecatedBy     *[]string       `json:"deprecatedBy,omitempty"`
+		Titles           *[]Title        `json:"titles,omitempty"`
+		Refs             *[]CPEReference `json:"refs,omitempty"`
+		Vulnerabilities  *[]string       `json:"vulnerabilities,omitempty"`
+	}
+
+	// Human readable title for CPE
+	Title struct {
+		Title string `json:"title"`
+		Lang  string `json:"lang"`
+	}
+
+	// Internet resource for CPE
+	CPEReference struct {
+		Ref  string            `json:"ref"`
+		Type *CPEReferenceType `json:"type,omitempty"`
+	}
+
+	CPEReferenceType string
+)
+
+var (
+	ADVISORY   CPEReferenceType = "Advisory"
+	CHANGE_LOG CPEReferenceType = "Change Log"
+	PRODUCT    CPEReferenceType = "Product"
+	PROJECT    CPEReferenceType = "Project"
+	VENDOR     CPEReferenceType = "Vendor"
+	VERSION    CPEReferenceType = "Version"
 )

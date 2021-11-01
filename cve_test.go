@@ -56,7 +56,7 @@ func TestGetCVE(t *testing.T) {
 				ResultsPerPage: 1,
 				StartIndex:     0,
 				TotalResults:   1,
-				Result: nvdapi.Result{
+				Result: nvdapi.CVEResult{
 					CVEDataType:      "CVE",
 					CVEDataFormat:    "MITRE",
 					CVEDataVersion:   "4.0",
@@ -84,7 +84,7 @@ func TestGetCVE(t *testing.T) {
 									},
 								},
 								References: nvdapi.References{
-									ReferenceData: []nvdapi.Reference{
+									ReferenceData: []nvdapi.CVEReference{
 										{
 											URL:       "https://github.com/go-gitea/gitea/pull/14898",
 											Name:      str("https://github.com/go-gitea/gitea/pull/14898"),
@@ -130,13 +130,13 @@ func TestGetCVE(t *testing.T) {
 												CPE23URI:              "cpe:2.3:a:gitea:gitea:*:*:*:*:*:*:*:*",
 												VersionStartIncluding: str("1.12.0"),
 												VersionEndIncluding:   str("1.12.6"),
-												CPEName:               &[]nvdapi.CPEName{},
+												CPEName:               &[]nvdapi.CVECPEName{},
 											}, {
 												Vulnerable:            true,
 												CPE23URI:              "cpe:2.3:a:gitea:gitea:*:*:*:*:*:*:*:*",
 												VersionStartIncluding: str("1.13.0"),
 												VersionEndExcluding:   str("1.13.4"),
-												CPEName:               &[]nvdapi.CPEName{},
+												CPEName:               &[]nvdapi.CVECPEName{},
 											},
 										},
 									},
@@ -254,7 +254,7 @@ func TestGetCVEs(t *testing.T) {
 				ResultsPerPage: 17,
 				StartIndex:     0,
 				TotalResults:   17,
-				Result: nvdapi.Result{
+				Result: nvdapi.CVEResult{
 					CVEDataType:      "CVE",
 					CVEDataFormat:    "MITRE",
 					CVEDataVersion:   "4.0",
@@ -282,7 +282,7 @@ func TestGetCVEs(t *testing.T) {
 									},
 								},
 								References: nvdapi.References{
-									ReferenceData: []nvdapi.Reference{
+									ReferenceData: []nvdapi.CVEReference{
 										{
 											URL:       "https://github.com/go-gitea/gitea/pull/14898",
 											Name:      str("https://github.com/go-gitea/gitea/pull/14898"),
@@ -328,13 +328,13 @@ func TestGetCVEs(t *testing.T) {
 												CPE23URI:              "cpe:2.3:a:gitea:gitea:*:*:*:*:*:*:*:*",
 												VersionStartIncluding: str("1.12.0"),
 												VersionEndIncluding:   str("1.12.6"),
-												CPEName:               &[]nvdapi.CPEName{},
+												CPEName:               &[]nvdapi.CVECPEName{},
 											}, {
 												Vulnerable:            true,
 												CPE23URI:              "cpe:2.3:a:gitea:gitea:*:*:*:*:*:*:*:*",
 												VersionStartIncluding: str("1.13.0"),
 												VersionEndExcluding:   str("1.13.4"),
-												CPEName:               &[]nvdapi.CPEName{},
+												CPEName:               &[]nvdapi.CVECPEName{},
 											},
 										},
 									},

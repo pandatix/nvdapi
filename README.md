@@ -9,7 +9,7 @@ The NVD API is an unofficial Go wrapper around the [NVD API](https://nvd.nist.go
 
 Supports:
  - [X] [CVE](https://nvd.nist.gov/developers/vulnerabilities)
- - [ ] [CPE](https://nvd.nist.gov/developers/products)
+ - [X] [CPE](https://nvd.nist.gov/developers/products)
 
 ## How to use
 

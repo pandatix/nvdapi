@@ -141,3 +141,7 @@ func b(b bool) *bool {
 func f(f float64) *float64 {
 	return &f
 }
+
+func i(i int) *int {
+	return &i
+}
