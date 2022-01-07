@@ -37,7 +37,7 @@ func GetCVE(client HTTPClient, params GetCVEParams) (*CVEResponse, error) {
 type GetCVEsParams struct {
 	AddOns                   *AddOns `schema:"addOns,omitempty"`
 	APIKey                   *string `schema:"apiKey,omitempty"`
-	CPEMatchString           *bool   `schema:"cpeMatchString,omitempty"`
+	CPEMatchString           *string `schema:"cpeMatchString,omitempty"`
 	CVSSV2Metrics            *bool   `schema:"cvssV2Metrics,omitempty"`
 	CVSSV2Severity           *bool   `schema:"cvssV2Severity,omitempty"`
 	CVSSV3Metrics            *bool   `schema:"cvssV3Metrics,omitempty"`

@@ -49,17 +49,35 @@ func TestGetCVE(t *testing.T) {
 }
 
 func TestGetCVEs(t *testing.T) {
-	var keywords = []string{
-		"gitea",
-		"rocket-chat",
+	var tests = map[string]struct {
+		Params nvdapi.GetCVEsParams
+	}{
+		"no-params": {
+			Params: nvdapi.GetCVEsParams{},
+		},
+		"keywords": {
+			Params: nvdapi.GetCVEsParams{
+				Keyword: str("gitea"),
+			},
+		},
+		"CPE v2.2 match string": {
+			Params: nvdapi.GetCVEsParams{
+				CPEMatchString: str("cpe:/a:gitea:gitea"),
+			},
+		},
+		"CPE v2.3 match string": {
+			Params: nvdapi.GetCVEsParams{
+				CPEMatchString: str("cpe:2.3:a:gitea:gitea:*:*:*:*:*:*:*:*"),
+			},
+		},
 	}
 
-	for _, kwd := range keywords {
-		t.Run(kwd, func(t *testing.T) {
+	for testname, tt := range tests {
+		t.Run(testname, func(t *testing.T) {
 			assert := assert.New(t)
 
 			client := &MdwClient{}
-			resp, err := nvdapi.GetCVEs(client, nvdapi.GetCVEsParams{Keyword: &kwd})
+			resp, err := nvdapi.GetCVEs(client, tt.Params)
 
 			// Ensure no error
 			if !assert.Nil(err) {
@@ -81,4 +99,8 @@ func TestGetCVEs(t *testing.T) {
 			assert.Equal(expected, actual)
 		})
 	}
+}
+
+func str(str string) *string {
+	return &str
 }
