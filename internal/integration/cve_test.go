@@ -59,17 +59,17 @@ func TestGetCVEs(t *testing.T) {
 		},
 		"keywords": {
 			Params: nvdapi.GetCVEsParams{
-				Keyword: str("gitea"),
+				Keyword: ptr("gitea"),
 			},
 		},
 		"CPE v2.2 match string": {
 			Params: nvdapi.GetCVEsParams{
-				CPEMatchString: str("cpe:/a:gitea:gitea"),
+				CPEMatchString: ptr("cpe:/a:gitea:gitea"),
 			},
 		},
 		"CPE v2.3 match string": {
 			Params: nvdapi.GetCVEsParams{
-				CPEMatchString: str("cpe:2.3:a:gitea:gitea:*:*:*:*:*:*:*:*"),
+				CPEMatchString: ptr("cpe:2.3:a:gitea:gitea:*:*:*:*:*:*:*:*"),
 			},
 		},
 	}
@@ -105,6 +105,6 @@ func TestGetCVEs(t *testing.T) {
 	}
 }
 
-func str(str string) *string {
-	return &str
+func ptr[T any](t T) *T {
+	return &t
 }

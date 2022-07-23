@@ -1,7 +1,6 @@
 package nvdapi_test
 
 import (
-	"encoding/json"
 	"net/http"
 	"testing"
 
@@ -40,12 +39,10 @@ func TestGetCVE(t *testing.T) {
 			},
 		},
 		"failing-unmarshal": {
-			Client:           newFakeHTTPClient(`{[}]`, http.StatusOK, nil),
+			Client:           newFakeHTTPClient(jsonSyntaxError, http.StatusOK, nil),
 			Params:           nvdapi.GetCVEParams{},
 			ExpectedResponse: nil,
-			ExpectedErr: &json.SyntaxError{
-				Offset: 2,
-			},
+			ExpectedErr:      errJsonSyntaxError,
 		},
 		"valid-call": {
 			Client: newFakeHTTPClient(`{"resultsPerPage":1,"startIndex":0,"totalResults":1,"result":{"CVE_data_type":"CVE","CVE_data_format":"MITRE","CVE_data_version":"4.0","CVE_data_timestamp":"2021-10-08T17:25Z","CVE_Items":[{"cve":{"data_type":"CVE","data_format":"MITRE","data_version":"4.0","CVE_data_meta":{"ID":"CVE-2021-28378","ASSIGNER":"cve@mitre.org"},"problemtype":{"problemtype_data":[{"description":[{"lang":"en","value":"CWE-79"}]}]},"references":{"reference_data":[{"url":"https://github.com/go-gitea/gitea/pull/14898","name":"https://github.com/go-gitea/gitea/pull/14898","refsource":"MISC","tags":["Patch","Third Party Advisory"]},{"url":"https://blog.gitea.io/2021/03/gitea-1.13.4-is-released/","name":"https://blog.gitea.io/2021/03/gitea-1.13.4-is-released/","refsource":"MISC","tags":["Release Notes","Vendor Advisory"]},{"url":"https://github.com/PandatiX/CVE-2021-28378","name":"https://github.com/PandatiX/CVE-2021-28378","refsource":"MISC","tags":[]}]},"description":{"description_data":[{"lang":"en","value":"Gitea 1.12.x and 1.13.x before 1.13.4 allows XSS via certain issue data in some situations."}]}},"configurations":{"CVE_data_version":"4.0","nodes":[{"operator":"OR","children":[],"cpe_match":[{"vulnerable":true,"cpe23Uri":"cpe:2.3:a:gitea:gitea:*:*:*:*:*:*:*:*","versionStartIncluding":"1.12.0","versionEndIncluding":"1.12.6","cpe_name":[]},{"vulnerable":true,"cpe23Uri":"cpe:2.3:a:gitea:gitea:*:*:*:*:*:*:*:*","versionStartIncluding":"1.13.0","versionEndExcluding":"1.13.4","cpe_name":[]}]}]},"impact":{"baseMetricV3":{"cvssV3":{"version":"3.1","vectorString":"CVSS:3.1/AV:N/AC:L/PR:L/UI:R/S:C/C:L/I:L/A:N","attackVector":"NETWORK","attackComplexity":"LOW","privilegesRequired":"LOW","userInteraction":"REQUIRED","scope":"CHANGED","confidentialityImpact":"LOW","integrityImpact":"LOW","availabilityImpact":"NONE","baseScore":5.4,"baseSeverity":"MEDIUM"},"exploitabilityScore":2.3,"impactScore":2.7},"baseMetricV2":{"cvssV2":{"version":"2.0","vectorString":"AV:N/AC:M/Au:S/C:N/I:P/A:N","accessVector":"NETWORK","accessComplexity":"MEDIUM","authentication":"SINGLE","confidentialityImpact":"NONE","integrityImpact":"PARTIAL","availabilityImpact":"NONE","baseScore":3.5},"severity":"LOW","exploitabilityScore":6.8,"impactScore":2.9,"acInsufInfo":false,"obtainAllPrivilege":false,"obtainUserPrivilege":false,"obtainOtherPrivilege":false,"userInteractionRequired":true}},"publishedDate":"2021-03-15T06:15Z","lastModifiedDate":"2021-09-24T22:15Z"}]}}`, http.StatusOK, nil),
@@ -87,24 +84,24 @@ func TestGetCVE(t *testing.T) {
 									ReferenceData: []nvdapi.CVEReference{
 										{
 											URL:       "https://github.com/go-gitea/gitea/pull/14898",
-											Name:      str("https://github.com/go-gitea/gitea/pull/14898"),
-											Refsource: str("MISC"),
+											Name:      ptr("https://github.com/go-gitea/gitea/pull/14898"),
+											Refsource: ptr("MISC"),
 											Tags: []string{
 												"Patch",
 												"Third Party Advisory",
 											},
 										}, {
 											URL:       "https://blog.gitea.io/2021/03/gitea-1.13.4-is-released/",
-											Name:      str("https://blog.gitea.io/2021/03/gitea-1.13.4-is-released/"),
-											Refsource: str("MISC"),
+											Name:      ptr("https://blog.gitea.io/2021/03/gitea-1.13.4-is-released/"),
+											Refsource: ptr("MISC"),
 											Tags: []string{
 												"Release Notes",
 												"Vendor Advisory",
 											},
 										}, {
 											URL:       "https://github.com/PandatiX/CVE-2021-28378",
-											Name:      str("https://github.com/PandatiX/CVE-2021-28378"),
-											Refsource: str("MISC"),
+											Name:      ptr("https://github.com/PandatiX/CVE-2021-28378"),
+											Refsource: ptr("MISC"),
 											Tags:      []string{},
 										},
 									},
@@ -122,20 +119,20 @@ func TestGetCVE(t *testing.T) {
 								CVEDataVersion: "4.0",
 								Nodes: []nvdapi.Node{
 									{
-										Operator: str("OR"),
+										Operator: ptr("OR"),
 										Children: []nvdapi.Node{},
 										CPEMatch: []nvdapi.CPEMatch{
 											{
 												Vulnerable:            true,
 												CPE23URI:              "cpe:2.3:a:gitea:gitea:*:*:*:*:*:*:*:*",
-												VersionStartIncluding: str("1.12.0"),
-												VersionEndIncluding:   str("1.12.6"),
+												VersionStartIncluding: ptr("1.12.0"),
+												VersionEndIncluding:   ptr("1.12.6"),
 												CPEName:               []nvdapi.CVECPEName{},
 											}, {
 												Vulnerable:            true,
 												CPE23URI:              "cpe:2.3:a:gitea:gitea:*:*:*:*:*:*:*:*",
-												VersionStartIncluding: str("1.13.0"),
-												VersionEndExcluding:   str("1.13.4"),
+												VersionStartIncluding: ptr("1.13.0"),
+												VersionEndExcluding:   ptr("1.13.4"),
 												CPEName:               []nvdapi.CVECPEName{},
 											},
 										},
@@ -147,44 +144,44 @@ func TestGetCVE(t *testing.T) {
 									CVSSV3: &nvdapi.CVSSV3{
 										Version:               "3.1",
 										VectorString:          "CVSS:3.1/AV:N/AC:L/PR:L/UI:R/S:C/C:L/I:L/A:N",
-										AttackVector:          str("NETWORK"),
-										AttackComplexity:      str("LOW"),
-										PrivilegesRequired:    str("LOW"),
-										UserInteraction:       str("REQUIRED"),
-										Scope:                 str("CHANGED"),
-										ConfidentialityImpact: str("LOW"),
-										IntegrityImpact:       str("LOW"),
-										AvailabilityImpact:    str("NONE"),
+										AttackVector:          ptr("NETWORK"),
+										AttackComplexity:      ptr("LOW"),
+										PrivilegesRequired:    ptr("LOW"),
+										UserInteraction:       ptr("REQUIRED"),
+										Scope:                 ptr("CHANGED"),
+										ConfidentialityImpact: ptr("LOW"),
+										IntegrityImpact:       ptr("LOW"),
+										AvailabilityImpact:    ptr("NONE"),
 										BaseScore:             5.4,
 										BaseSeverity:          "MEDIUM",
 									},
-									ExploitabilityScore: f(2.3),
-									ImpactScore:         f(2.7),
+									ExploitabilityScore: ptr(2.3),
+									ImpactScore:         ptr(2.7),
 								},
 								BaseMetricV2: &nvdapi.BaseMetricV2{
 									CVSSV2: &nvdapi.CVSSV2{
 										Version:               "2.0",
 										VectorString:          "AV:N/AC:M/Au:S/C:N/I:P/A:N",
-										AccessVector:          str("NETWORK"),
-										AccessComplexity:      str("MEDIUM"),
-										Authentication:        str("SINGLE"),
-										ConfidentialityImpact: str("NONE"),
-										IntegrityImpact:       str("PARTIAL"),
-										AvailabilityImpact:    str("NONE"),
+										AccessVector:          ptr("NETWORK"),
+										AccessComplexity:      ptr("MEDIUM"),
+										Authentication:        ptr("SINGLE"),
+										ConfidentialityImpact: ptr("NONE"),
+										IntegrityImpact:       ptr("PARTIAL"),
+										AvailabilityImpact:    ptr("NONE"),
 										BaseScore:             3.5,
 									},
-									Severity:                str("LOW"),
-									ExploitabilityScore:     f(6.8),
-									ImpactScore:             f(2.9),
-									AcInsufInfo:             b(false),
-									ObtainAllPrivilege:      b(false),
-									ObtainUserPrivilege:     b(false),
-									ObtainOtherPrivilege:    b(false),
-									UserInteractionRequired: b(true),
+									Severity:                ptr("LOW"),
+									ExploitabilityScore:     ptr(6.8),
+									ImpactScore:             ptr(2.9),
+									AcInsufInfo:             ptr(false),
+									ObtainAllPrivilege:      ptr(false),
+									ObtainUserPrivilege:     ptr(false),
+									ObtainOtherPrivilege:    ptr(false),
+									UserInteractionRequired: ptr(true),
 								},
 							},
-							PublishedDate:    str("2021-03-15T06:15Z"),
-							LastModifiedDate: str("2021-09-24T22:15Z"),
+							PublishedDate:    ptr("2021-03-15T06:15Z"),
+							LastModifiedDate: ptr("2021-09-24T22:15Z"),
 						},
 					},
 				},
@@ -200,7 +197,7 @@ func TestGetCVE(t *testing.T) {
 			resp, err := nvdapi.GetCVE(tt.Client, tt.Params)
 
 			assert.Equal(tt.ExpectedResponse, resp)
-			checkErr(err, tt.ExpectedErr, t)
+			assert.Equal(tt.ExpectedErr, err)
 		})
 	}
 }
@@ -236,19 +233,17 @@ func TestGetCVEs(t *testing.T) {
 			},
 		},
 		"failing-unmarshal": {
-			Client:           newFakeHTTPClient(`{[}]`, http.StatusOK, nil),
+			Client:           newFakeHTTPClient(jsonSyntaxError, http.StatusOK, nil),
 			Params:           nvdapi.GetCVEsParams{},
 			ExpectedResponse: nil,
-			ExpectedErr: &json.SyntaxError{
-				Offset: 2,
-			},
+			ExpectedErr:      errJsonSyntaxError,
 		},
 		"valid-call": {
 			// Results have been truncated in payload to avoid having too much data
 			// to code for this test.
 			Client: newFakeHTTPClient(`{"resultsPerPage":17,"startIndex":0,"totalResults":17,"result":{"CVE_data_type":"CVE","CVE_data_format":"MITRE","CVE_data_version":"4.0","CVE_data_timestamp":"2021-10-07T20:27Z","CVE_Items":[{"cve":{"data_type":"CVE","data_format":"MITRE","data_version":"4.0","CVE_data_meta":{"ID":"CVE-2021-28378","ASSIGNER":"cve@mitre.org"},"problemtype":{"problemtype_data":[{"description":[{"lang":"en","value":"CWE-79"}]}]},"references":{"reference_data":[{"url":"https://github.com/go-gitea/gitea/pull/14898","name":"https://github.com/go-gitea/gitea/pull/14898","refsource":"MISC","tags":["Patch","Third Party Advisory"]},{"url":"https://blog.gitea.io/2021/03/gitea-1.13.4-is-released/","name":"https://blog.gitea.io/2021/03/gitea-1.13.4-is-released/","refsource":"MISC","tags":["Release Notes","Vendor Advisory"]},{"url":"https://github.com/PandatiX/CVE-2021-28378","name":"https://github.com/PandatiX/CVE-2021-28378","refsource":"MISC","tags":[]}]},"description":{"description_data":[{"lang":"en","value":"Gitea 1.12.x and 1.13.x before 1.13.4 allows XSS via certain issue data in some situations."}]}},"configurations":{"CVE_data_version":"4.0","nodes":[{"operator":"OR","children":[],"cpe_match":[{"vulnerable":true,"cpe23Uri":"cpe:2.3:a:gitea:gitea:*:*:*:*:*:*:*:*","versionStartIncluding":"1.12.0","versionEndIncluding":"1.12.6","cpe_name":[]},{"vulnerable":true,"cpe23Uri":"cpe:2.3:a:gitea:gitea:*:*:*:*:*:*:*:*","versionStartIncluding":"1.13.0","versionEndExcluding":"1.13.4","cpe_name":[]}]}]},"impact":{"baseMetricV3":{"cvssV3":{"version":"3.1","vectorString":"CVSS:3.1/AV:N/AC:L/PR:L/UI:R/S:C/C:L/I:L/A:N","attackVector":"NETWORK","attackComplexity":"LOW","privilegesRequired":"LOW","userInteraction":"REQUIRED","scope":"CHANGED","confidentialityImpact":"LOW","integrityImpact":"LOW","availabilityImpact":"NONE","baseScore":5.4,"baseSeverity":"MEDIUM"},"exploitabilityScore":2.3,"impactScore":2.7},"baseMetricV2":{"cvssV2":{"version":"2.0","vectorString":"AV:N/AC:M/Au:S/C:N/I:P/A:N","accessVector":"NETWORK","accessComplexity":"MEDIUM","authentication":"SINGLE","confidentialityImpact":"NONE","integrityImpact":"PARTIAL","availabilityImpact":"NONE","baseScore":3.5},"severity":"LOW","exploitabilityScore":6.8,"impactScore":2.9,"acInsufInfo":false,"obtainAllPrivilege":false,"obtainUserPrivilege":false,"obtainOtherPrivilege":false,"userInteractionRequired":true}},"publishedDate":"2021-03-15T06:15Z","lastModifiedDate":"2021-09-24T22:15Z"}]}}`, http.StatusOK, nil),
 			Params: nvdapi.GetCVEsParams{
-				Keyword: str("gitea"),
+				Keyword: ptr("gitea"),
 			},
 			ExpectedResponse: &nvdapi.CVEResponse{
 				ResultsPerPage: 17,
@@ -285,24 +280,24 @@ func TestGetCVEs(t *testing.T) {
 									ReferenceData: []nvdapi.CVEReference{
 										{
 											URL:       "https://github.com/go-gitea/gitea/pull/14898",
-											Name:      str("https://github.com/go-gitea/gitea/pull/14898"),
-											Refsource: str("MISC"),
+											Name:      ptr("https://github.com/go-gitea/gitea/pull/14898"),
+											Refsource: ptr("MISC"),
 											Tags: []string{
 												"Patch",
 												"Third Party Advisory",
 											},
 										}, {
 											URL:       "https://blog.gitea.io/2021/03/gitea-1.13.4-is-released/",
-											Name:      str("https://blog.gitea.io/2021/03/gitea-1.13.4-is-released/"),
-											Refsource: str("MISC"),
+											Name:      ptr("https://blog.gitea.io/2021/03/gitea-1.13.4-is-released/"),
+											Refsource: ptr("MISC"),
 											Tags: []string{
 												"Release Notes",
 												"Vendor Advisory",
 											},
 										}, {
 											URL:       "https://github.com/PandatiX/CVE-2021-28378",
-											Name:      str("https://github.com/PandatiX/CVE-2021-28378"),
-											Refsource: str("MISC"),
+											Name:      ptr("https://github.com/PandatiX/CVE-2021-28378"),
+											Refsource: ptr("MISC"),
 											Tags:      []string{},
 										},
 									},
@@ -320,20 +315,20 @@ func TestGetCVEs(t *testing.T) {
 								CVEDataVersion: "4.0",
 								Nodes: []nvdapi.Node{
 									{
-										Operator: str("OR"),
+										Operator: ptr("OR"),
 										Children: []nvdapi.Node{},
 										CPEMatch: []nvdapi.CPEMatch{
 											{
 												Vulnerable:            true,
 												CPE23URI:              "cpe:2.3:a:gitea:gitea:*:*:*:*:*:*:*:*",
-												VersionStartIncluding: str("1.12.0"),
-												VersionEndIncluding:   str("1.12.6"),
+												VersionStartIncluding: ptr("1.12.0"),
+												VersionEndIncluding:   ptr("1.12.6"),
 												CPEName:               []nvdapi.CVECPEName{},
 											}, {
 												Vulnerable:            true,
 												CPE23URI:              "cpe:2.3:a:gitea:gitea:*:*:*:*:*:*:*:*",
-												VersionStartIncluding: str("1.13.0"),
-												VersionEndExcluding:   str("1.13.4"),
+												VersionStartIncluding: ptr("1.13.0"),
+												VersionEndExcluding:   ptr("1.13.4"),
 												CPEName:               []nvdapi.CVECPEName{},
 											},
 										},
@@ -345,44 +340,44 @@ func TestGetCVEs(t *testing.T) {
 									CVSSV3: &nvdapi.CVSSV3{
 										Version:               "3.1",
 										VectorString:          "CVSS:3.1/AV:N/AC:L/PR:L/UI:R/S:C/C:L/I:L/A:N",
-										AttackVector:          str("NETWORK"),
-										AttackComplexity:      str("LOW"),
-										PrivilegesRequired:    str("LOW"),
-										UserInteraction:       str("REQUIRED"),
-										Scope:                 str("CHANGED"),
-										ConfidentialityImpact: str("LOW"),
-										IntegrityImpact:       str("LOW"),
-										AvailabilityImpact:    str("NONE"),
+										AttackVector:          ptr("NETWORK"),
+										AttackComplexity:      ptr("LOW"),
+										PrivilegesRequired:    ptr("LOW"),
+										UserInteraction:       ptr("REQUIRED"),
+										Scope:                 ptr("CHANGED"),
+										ConfidentialityImpact: ptr("LOW"),
+										IntegrityImpact:       ptr("LOW"),
+										AvailabilityImpact:    ptr("NONE"),
 										BaseScore:             5.4,
 										BaseSeverity:          "MEDIUM",
 									},
-									ExploitabilityScore: f(2.3),
-									ImpactScore:         f(2.7),
+									ExploitabilityScore: ptr(2.3),
+									ImpactScore:         ptr(2.7),
 								},
 								BaseMetricV2: &nvdapi.BaseMetricV2{
 									CVSSV2: &nvdapi.CVSSV2{
 										Version:               "2.0",
 										VectorString:          "AV:N/AC:M/Au:S/C:N/I:P/A:N",
-										AccessVector:          str("NETWORK"),
-										AccessComplexity:      str("MEDIUM"),
-										Authentication:        str("SINGLE"),
-										ConfidentialityImpact: str("NONE"),
-										IntegrityImpact:       str("PARTIAL"),
-										AvailabilityImpact:    str("NONE"),
+										AccessVector:          ptr("NETWORK"),
+										AccessComplexity:      ptr("MEDIUM"),
+										Authentication:        ptr("SINGLE"),
+										ConfidentialityImpact: ptr("NONE"),
+										IntegrityImpact:       ptr("PARTIAL"),
+										AvailabilityImpact:    ptr("NONE"),
 										BaseScore:             3.5,
 									},
-									Severity:                str("LOW"),
-									ExploitabilityScore:     f(6.8),
-									ImpactScore:             f(2.9),
-									AcInsufInfo:             b(false),
-									ObtainAllPrivilege:      b(false),
-									ObtainUserPrivilege:     b(false),
-									ObtainOtherPrivilege:    b(false),
-									UserInteractionRequired: b(true),
+									Severity:                ptr("LOW"),
+									ExploitabilityScore:     ptr(6.8),
+									ImpactScore:             ptr(2.9),
+									AcInsufInfo:             ptr(false),
+									ObtainAllPrivilege:      ptr(false),
+									ObtainUserPrivilege:     ptr(false),
+									ObtainOtherPrivilege:    ptr(false),
+									UserInteractionRequired: ptr(true),
 								},
 							},
-							PublishedDate:    str("2021-03-15T06:15Z"),
-							LastModifiedDate: str("2021-09-24T22:15Z"),
+							PublishedDate:    ptr("2021-03-15T06:15Z"),
+							LastModifiedDate: ptr("2021-09-24T22:15Z"),
 						},
 					},
 				},
@@ -398,7 +393,7 @@ func TestGetCVEs(t *testing.T) {
 			resp, err := nvdapi.GetCVEs(tt.Client, tt.Params)
 
 			assert.Equal(tt.ExpectedResponse, resp)
-			checkErr(err, tt.ExpectedErr, t)
+			assert.Equal(tt.ExpectedErr, err)
 		})
 	}
 }

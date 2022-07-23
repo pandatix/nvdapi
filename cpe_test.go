@@ -1,7 +1,6 @@
 package nvdapi_test
 
 import (
-	"encoding/json"
 	"net/http"
 	"testing"
 
@@ -40,18 +39,16 @@ func TestGetCPEs(t *testing.T) {
 			},
 		},
 		"failing-unmarshal": {
-			Client:           newFakeHTTPClient(`{[}]`, http.StatusOK, nil),
+			Client:           newFakeHTTPClient(jsonSyntaxError, http.StatusOK, nil),
 			Params:           nvdapi.GetCPEParams{},
 			ExpectedResponse: nil,
-			ExpectedErr: &json.SyntaxError{
-				Offset: 2,
-			},
+			ExpectedErr:      errJsonSyntaxError,
 		},
 		"valid-call": {
 			Client: newFakeHTTPClient(`{"resultsPerPage":1,"startIndex":0,"totalResults":5644,"result":{"dataType":"CPE","feedVersion":"1.0","cpeCount":5644,"feedTimestamp":"2021-11-01T17:24Z","cpes":[{"deprecated":false,"cpe23Uri":"cpe:2.3:a:microsoft:antispyware:-:*:*:*:*:*:*:*","lastModifiedDate":"2007-09-14T17:36Z","titles":[{"title":"Microsoft antispyware","lang":"en_US"}],"refs":[],"deprecatedBy":[],"vulnerabilities":[]}]}}`, http.StatusOK, nil),
 			Params: nvdapi.GetCPEParams{
-				CPEMatchString: str("cpe:2.3:*:microsoft"),
-				ResultsPerPage: i(1),
+				CPEMatchString: ptr("cpe:2.3:*:microsoft"),
+				ResultsPerPage: ptr(1),
 			},
 			ExpectedResponse: &nvdapi.CPEResponse{
 				ResultsPerPage: 1,
@@ -61,10 +58,10 @@ func TestGetCPEs(t *testing.T) {
 					DataType:      "CPE",
 					FeedVersion:   "1.0",
 					CPECount:      5644,
-					FeedTimestamp: str("2021-11-01T17:24Z"),
+					FeedTimestamp: ptr("2021-11-01T17:24Z"),
 					CPEs: []nvdapi.CPEName{
 						{
-							Deprecated:       b(false),
+							Deprecated:       ptr(false),
 							CPE23URI:         "cpe:2.3:a:microsoft:antispyware:-:*:*:*:*:*:*:*",
 							LastModifiedDate: "2007-09-14T17:36Z",
 							Titles: []nvdapi.Title{
@@ -91,7 +88,7 @@ func TestGetCPEs(t *testing.T) {
 			resp, err := nvdapi.GetCPEs(tt.Client, tt.Params)
 
 			assert.Equal(tt.ExpectedResponse, resp)
-			checkErr(err, tt.ExpectedErr, t)
+			assert.Equal(tt.ExpectedErr, err)
 		})
 	}
 }
