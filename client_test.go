@@ -13,7 +13,7 @@ var (
 	jsonSyntaxError = "{[}]"
 
 	errFake            = errors.New("this is a fake error")
-	errJsonSyntaxError = json.Unmarshal([]byte(jsonSyntaxError), nil)
+	errJsonSyntaxError = json.Unmarshal([]byte(jsonSyntaxError), &struct{}{})
 )
 
 // FakeHTTPClient is an implementation of HTTPClient that
