@@ -1,12 +1,10 @@
-//go:build integration
-// +build integration
-
 package integration_test
 
 import (
 	"bytes"
 	"encoding/json"
 	"testing"
+	"time"
 
 	"github.com/pandatix/nvdapi"
 	"github.com/stretchr/testify/assert"
@@ -14,9 +12,12 @@ import (
 
 func TestGetCPEs(t *testing.T) {
 	assert := assert.New(t)
+	defer time.Sleep(6 * time.Second)
 
 	client := &MdwClient{}
-	resp, err := nvdapi.GetCPEs(client, nvdapi.GetCPEParams{})
+	resp, err := nvdapi.GetCPEs(client, nvdapi.GetCPEParams{
+		APIKey: &apiKey,
+	})
 
 	// Ensure no error
 	if !assert.Nil(err) {

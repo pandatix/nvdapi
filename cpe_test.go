@@ -67,15 +67,15 @@ func TestGetCPEs(t *testing.T) {
 							Deprecated:       b(false),
 							CPE23URI:         "cpe:2.3:a:microsoft:antispyware:-:*:*:*:*:*:*:*",
 							LastModifiedDate: "2007-09-14T17:36Z",
-							Titles: &[]nvdapi.Title{
+							Titles: []nvdapi.Title{
 								{
 									Title: "Microsoft antispyware",
 									Lang:  "en_US",
 								},
 							},
-							Refs:            &[]nvdapi.CPEReference{},
-							DeprecatedBy:    &[]string{},
-							Vulnerabilities: &[]string{},
+							Refs:            []nvdapi.CPEReference{},
+							DeprecatedBy:    []string{},
+							Vulnerabilities: []string{},
 						},
 					},
 				},

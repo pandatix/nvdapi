@@ -1,12 +1,10 @@
-//go:build integration
-// +build integration
-
 package integration_test
 
 import (
 	"bytes"
 	"encoding/json"
 	"testing"
+	"time"
 
 	"github.com/pandatix/nvdapi"
 	"github.com/stretchr/testify/assert"
@@ -22,9 +20,13 @@ func TestGetCVE(t *testing.T) {
 	for _, cve := range cves {
 		t.Run(cve, func(t *testing.T) {
 			assert := assert.New(t)
+			defer time.Sleep(6 * time.Second)
 
 			client := &MdwClient{}
-			resp, err := nvdapi.GetCVE(client, nvdapi.GetCVEParams{CVE: cve})
+			resp, err := nvdapi.GetCVE(client, nvdapi.GetCVEParams{
+				CVE:    cve,
+				APIKey: &apiKey,
+			})
 
 			// Ensure no error
 			if !assert.Nil(err) {
@@ -75,8 +77,10 @@ func TestGetCVEs(t *testing.T) {
 	for testname, tt := range tests {
 		t.Run(testname, func(t *testing.T) {
 			assert := assert.New(t)
+			defer time.Sleep(6 * time.Second)
 
 			client := &MdwClient{}
+			tt.Params.APIKey = &apiKey
 			resp, err := nvdapi.GetCVEs(client, tt.Params)
 
 			// Ensure no error

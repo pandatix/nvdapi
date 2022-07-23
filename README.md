@@ -11,6 +11,8 @@ Supports:
  - [X] [CVE](https://nvd.nist.gov/developers/vulnerabilities)
  - [X] [CPE](https://nvd.nist.gov/developers/products)
 
+This product uses the NVD API but is not endorsed or certified by the NVD.
+
 ## How to use
 
 The following shows how to basically use the wrapper to get all the CVEs for a given keyword.
@@ -27,21 +29,16 @@ import (
 )
 
 func main() {
-	// Configure and issue the request
-	params := nvdapi.GetCVEsParams{
+	// Configure and execute the request
+	resp, err := nvdapi.GetCVEs(&http.Client{}, nvdapi.GetCVEsParams{
 		Keyword: str("gitea"),
-	}
-	resp, err := nvdapi.GetCVEs(&http.Client{}, params)
+	})
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	// Make sure there are CVE items
-	if resp.Result.CVEItems == nil {
-		return
-	}
-
-	for _, item := range *resp.Result.CVEItems {
+	// Print each CVE's ID
+	for _, item := range resp.Result.CVEItems {
 		fmt.Println(item.CVE.CVEDataMeta.ID)
 	}
 }

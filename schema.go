@@ -6,15 +6,24 @@ type (
 		StartIndex     int       `json:"startIndex"`
 		TotalResults   int       `json:"totalResults"`
 		Result         CVEResult `json:"result"`
+
+		// Following are returned only when using the NVD API without
+		// or an invalid API key. They are not actually part of the
+		// NVD datamodel.
+
+		Authorized *bool   `json:"authorized,omitempty"`
+		Error      *string `json:"error,omitempty"`
+		LoggedIn   *bool   `json:"loggedIn,omitempty"`
+		Message    *string `json:"message,omitempty"`
 	}
 
 	CVEResult struct {
-		CVEDataType         string     `json:"CVE_data_type"`
-		CVEDataFormat       string     `json:"CVE_data_format"`
-		CVEDataVersion      string     `json:"CVE_data_version"`
-		CVEDataNumberOfCVEs *string    `json:"CVE_data_numberOfCVEs,omitempty"`
-		CVEDataTimestamp    string     `json:"CVE_data_timestamp"`
-		CVEItems            *[]CVEItem `json:"CVE_Items,omitempty"`
+		CVEDataType         string    `json:"CVE_data_type"`
+		CVEDataFormat       string    `json:"CVE_data_format"`
+		CVEDataVersion      string    `json:"CVE_data_version"`
+		CVEDataNumberOfCVEs *string   `json:"CVE_data_numberOfCVEs,omitempty"`
+		CVEDataTimestamp    string    `json:"CVE_data_timestamp"`
+		CVEItems            []CVEItem `json:"CVE_Items,omitempty"`
 	}
 
 	// CVEITEM defines a vulnerability in the NVD data feed as defined
@@ -109,10 +118,10 @@ type (
 	CVEReference struct {
 		// URL has a maximum length of 500 characters according to the
 		// NIST API schema.
-		URL       string    `json:"url"`
-		Name      *string   `json:"name,omitempty"`
-		Refsource *string   `json:"refsource,omitempty"`
-		Tags      *[]string `json:"tags,omitempty"`
+		URL       string   `json:"url"`
+		Name      *string  `json:"name,omitempty"`
+		Refsource *string  `json:"refsource,omitempty"`
+		Tags      []string `json:"tags"`
 	}
 
 	LangString struct {
@@ -125,30 +134,30 @@ type (
 	// Configurations defines the set of product configurations for a
 	// NVD applicability statement as defined in the NIST API schema.
 	Configurations struct {
-		CVEDataVersion string  `json:"CVE_data_version"`
-		Nodes          *[]Node `json:"nodes,omitempty"`
+		CVEDataVersion string `json:"CVE_data_version"`
+		Nodes          []Node `json:"nodes"`
 	}
 
 	// Node is a node or sub-node in an NVD applicability statement
 	// as defined in the NIST API schema.
 	Node struct {
-		Operator *string     `json:"operator,omitempty"`
-		Negate   *bool       `json:"negate,omitempty"`
-		Children *[]Node     `json:"children,omitempty"`
-		CPEMatch *[]CPEMatch `json:"cpe_match,omitempty"`
+		Operator *string    `json:"operator,omitempty"`
+		Negate   *bool      `json:"negate,omitempty"`
+		Children []Node     `json:"children"`
+		CPEMatch []CPEMatch `json:"cpe_match"`
 	}
 
 	// CPEMatch is the CPE Match string or range as defined in the
 	// NIST API schema.
 	CPEMatch struct {
-		Vulnerable            bool          `json:"vulnerable"`
-		CPE22URI              *string       `json:"cpe22Uri,omitempty"`
-		CPE23URI              string        `json:"cpe23Uri"`
-		VersionStartExcluding *string       `json:"versionStartExcluding,omitempty"`
-		VersionStartIncluding *string       `json:"versionStartIncluding,omitempty"`
-		VersionEndExcluding   *string       `json:"versionEndExcluding,omitempty"`
-		VersionEndIncluding   *string       `json:"versionEndIncluding,omitempty"`
-		CPEName               *[]CVECPEName `json:"cpe_name,omitempty"`
+		Vulnerable            bool         `json:"vulnerable"`
+		CPE22URI              *string      `json:"cpe22Uri,omitempty"`
+		CPE23URI              string       `json:"cpe23Uri"`
+		VersionStartExcluding *string      `json:"versionStartExcluding,omitempty"`
+		VersionStartIncluding *string      `json:"versionStartIncluding,omitempty"`
+		VersionEndExcluding   *string      `json:"versionEndExcluding,omitempty"`
+		VersionEndIncluding   *string      `json:"versionEndIncluding,omitempty"`
+		CPEName               []CVECPEName `json:"cpe_name"`
 	}
 
 	// CPEName is the CPE name as defined in the NIST API schema.
@@ -262,13 +271,13 @@ type (
 
 	// CPE name
 	CPEName struct {
-		CPE23URI         string          `json:"cpe23Uri"`
-		LastModifiedDate string          `json:"lastModifiedDate"`
-		Deprecated       *bool           `json:"deprecated,omitempty"`
-		DeprecatedBy     *[]string       `json:"deprecatedBy,omitempty"`
-		Titles           *[]Title        `json:"titles,omitempty"`
-		Refs             *[]CPEReference `json:"refs,omitempty"`
-		Vulnerabilities  *[]string       `json:"vulnerabilities,omitempty"`
+		CPE23URI         string         `json:"cpe23Uri"`
+		LastModifiedDate string         `json:"lastModifiedDate"`
+		Deprecated       *bool          `json:"deprecated,omitempty"`
+		DeprecatedBy     []string       `json:"deprecatedBy"`
+		Titles           []Title        `json:"titles"`
+		Refs             []CPEReference `json:"refs"`
+		Vulnerabilities  []string       `json:"vulnerabilities"`
 	}
 
 	// Human readable title for CPE

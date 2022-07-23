@@ -61,7 +61,7 @@ func TestGetCVE(t *testing.T) {
 					CVEDataFormat:    "MITRE",
 					CVEDataVersion:   "4.0",
 					CVEDataTimestamp: "2021-10-08T17:25Z",
-					CVEItems: &[]nvdapi.CVEItem{
+					CVEItems: []nvdapi.CVEItem{
 						{
 							CVE: nvdapi.CVE{
 								DataType:    "CVE",
@@ -89,7 +89,7 @@ func TestGetCVE(t *testing.T) {
 											URL:       "https://github.com/go-gitea/gitea/pull/14898",
 											Name:      str("https://github.com/go-gitea/gitea/pull/14898"),
 											Refsource: str("MISC"),
-											Tags: &[]string{
+											Tags: []string{
 												"Patch",
 												"Third Party Advisory",
 											},
@@ -97,7 +97,7 @@ func TestGetCVE(t *testing.T) {
 											URL:       "https://blog.gitea.io/2021/03/gitea-1.13.4-is-released/",
 											Name:      str("https://blog.gitea.io/2021/03/gitea-1.13.4-is-released/"),
 											Refsource: str("MISC"),
-											Tags: &[]string{
+											Tags: []string{
 												"Release Notes",
 												"Vendor Advisory",
 											},
@@ -105,7 +105,7 @@ func TestGetCVE(t *testing.T) {
 											URL:       "https://github.com/PandatiX/CVE-2021-28378",
 											Name:      str("https://github.com/PandatiX/CVE-2021-28378"),
 											Refsource: str("MISC"),
-											Tags:      &[]string{},
+											Tags:      []string{},
 										},
 									},
 								},
@@ -120,23 +120,23 @@ func TestGetCVE(t *testing.T) {
 							},
 							Configurations: &nvdapi.Configurations{
 								CVEDataVersion: "4.0",
-								Nodes: &[]nvdapi.Node{
+								Nodes: []nvdapi.Node{
 									{
 										Operator: str("OR"),
-										Children: &[]nvdapi.Node{},
-										CPEMatch: &[]nvdapi.CPEMatch{
+										Children: []nvdapi.Node{},
+										CPEMatch: []nvdapi.CPEMatch{
 											{
 												Vulnerable:            true,
 												CPE23URI:              "cpe:2.3:a:gitea:gitea:*:*:*:*:*:*:*:*",
 												VersionStartIncluding: str("1.12.0"),
 												VersionEndIncluding:   str("1.12.6"),
-												CPEName:               &[]nvdapi.CVECPEName{},
+												CPEName:               []nvdapi.CVECPEName{},
 											}, {
 												Vulnerable:            true,
 												CPE23URI:              "cpe:2.3:a:gitea:gitea:*:*:*:*:*:*:*:*",
 												VersionStartIncluding: str("1.13.0"),
 												VersionEndExcluding:   str("1.13.4"),
-												CPEName:               &[]nvdapi.CVECPEName{},
+												CPEName:               []nvdapi.CVECPEName{},
 											},
 										},
 									},
@@ -259,7 +259,7 @@ func TestGetCVEs(t *testing.T) {
 					CVEDataFormat:    "MITRE",
 					CVEDataVersion:   "4.0",
 					CVEDataTimestamp: "2021-10-07T20:27Z",
-					CVEItems: &[]nvdapi.CVEItem{
+					CVEItems: []nvdapi.CVEItem{
 						{
 							CVE: nvdapi.CVE{
 								DataType:    "CVE",
@@ -287,7 +287,7 @@ func TestGetCVEs(t *testing.T) {
 											URL:       "https://github.com/go-gitea/gitea/pull/14898",
 											Name:      str("https://github.com/go-gitea/gitea/pull/14898"),
 											Refsource: str("MISC"),
-											Tags: &[]string{
+											Tags: []string{
 												"Patch",
 												"Third Party Advisory",
 											},
@@ -295,7 +295,7 @@ func TestGetCVEs(t *testing.T) {
 											URL:       "https://blog.gitea.io/2021/03/gitea-1.13.4-is-released/",
 											Name:      str("https://blog.gitea.io/2021/03/gitea-1.13.4-is-released/"),
 											Refsource: str("MISC"),
-											Tags: &[]string{
+											Tags: []string{
 												"Release Notes",
 												"Vendor Advisory",
 											},
@@ -303,7 +303,7 @@ func TestGetCVEs(t *testing.T) {
 											URL:       "https://github.com/PandatiX/CVE-2021-28378",
 											Name:      str("https://github.com/PandatiX/CVE-2021-28378"),
 											Refsource: str("MISC"),
-											Tags:      &[]string{},
+											Tags:      []string{},
 										},
 									},
 								},
@@ -318,23 +318,23 @@ func TestGetCVEs(t *testing.T) {
 							},
 							Configurations: &nvdapi.Configurations{
 								CVEDataVersion: "4.0",
-								Nodes: &[]nvdapi.Node{
+								Nodes: []nvdapi.Node{
 									{
 										Operator: str("OR"),
-										Children: &[]nvdapi.Node{},
-										CPEMatch: &[]nvdapi.CPEMatch{
+										Children: []nvdapi.Node{},
+										CPEMatch: []nvdapi.CPEMatch{
 											{
 												Vulnerable:            true,
 												CPE23URI:              "cpe:2.3:a:gitea:gitea:*:*:*:*:*:*:*:*",
 												VersionStartIncluding: str("1.12.0"),
 												VersionEndIncluding:   str("1.12.6"),
-												CPEName:               &[]nvdapi.CVECPEName{},
+												CPEName:               []nvdapi.CVECPEName{},
 											}, {
 												Vulnerable:            true,
 												CPE23URI:              "cpe:2.3:a:gitea:gitea:*:*:*:*:*:*:*:*",
 												VersionStartIncluding: str("1.13.0"),
 												VersionEndExcluding:   str("1.13.4"),
-												CPEName:               &[]nvdapi.CVECPEName{},
+												CPEName:               []nvdapi.CVECPEName{},
 											},
 										},
 									},
