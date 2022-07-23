@@ -31,7 +31,7 @@ import (
 func main() {
 	// Configure and execute the request
 	resp, err := nvdapi.GetCVEs(&http.Client{}, nvdapi.GetCVEsParams{
-		Keyword: str("gitea"),
+		Keyword: ptr("gitea"),
 	})
 	if err != nil {
 		log.Fatal(err)
@@ -43,8 +43,8 @@ func main() {
 	}
 }
 
-func str(str string) *string {
-	return &str
+func ptr[T any](t T) *T {
+	return &t
 }
 ```
 
