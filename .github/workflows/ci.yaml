@@ -83,6 +83,7 @@ jobs:
             update-coverage: true
     runs-on: ${{ matrix.platform }}
     needs: [unit-tests]
+    environment: Actions
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
@@ -100,4 +101,4 @@ jobs:
           restore-keys: ${{ runner.os }}-go-
 
       - name: Run go integration tests
-        run: go test -tags integration -v ./internal/integration/
+        run: API_KEY=${{ secrets.API_KEY }} go test -tags integration -v ./internal/integration/
