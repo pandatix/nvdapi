@@ -2,7 +2,7 @@
 
 [![reference](https://godoc.org/github.com/pandatix/nvdapi/v5?status.svg=)](https://pkg.go.dev/github.com/pandatix/nvdapi)
 [![go report](https://goreportcard.com/badge/github.com/pandatix/nvdapi)](https://goreportcard.com/report/github.com/pandatix/nvdapi)
-[![codecov](https://codecov.io/gh/pandatix/nvdapi/branch/master/graph/badge.svg)](https://codecov.io/gh/pandatix/nvdapi)
+[![codecov](https://codecov.io/gh/pandatix/nvdapi/branch/main/graph/badge.svg?token=2I1BWR43GI)](https://codecov.io/gh/pandatix/nvdapi)
 [![CI](https://github.com/pandatix/nvdapi/actions/workflows/ci.yaml/badge.svg)](https://github.com/pandatix/nvdapi/actions?query=workflow%3Aci+)
 
 The NVD API is an unofficial Go wrapper around the [NVD API](https://nvd.nist.gov/General/News/New-NVD-CVE-CPE-API-and-SOAP-Retirement).
