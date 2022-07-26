@@ -194,7 +194,7 @@ func TestGetCVE(t *testing.T) {
 		t.Run(testname, func(t *testing.T) {
 			assert := assert.New(t)
 
-			resp, err := nvdapi.GetCVE(tt.Client, tt.Params)
+			resp, err := nvdapi.GetCVE(tt.Client, tt.Params, opts...)
 
 			assert.Equal(tt.ExpectedResponse, resp)
 			assert.Equal(tt.ExpectedErr, err)
@@ -390,7 +390,7 @@ func TestGetCVEs(t *testing.T) {
 		t.Run(testname, func(t *testing.T) {
 			assert := assert.New(t)
 
-			resp, err := nvdapi.GetCVEs(tt.Client, tt.Params)
+			resp, err := nvdapi.GetCVEs(tt.Client, tt.Params, opts...)
 
 			assert.Equal(tt.ExpectedResponse, resp)
 			assert.Equal(tt.ExpectedErr, err)

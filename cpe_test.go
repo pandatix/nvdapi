@@ -85,7 +85,7 @@ func TestGetCPEs(t *testing.T) {
 		t.Run(testname, func(t *testing.T) {
 			assert := assert.New(t)
 
-			resp, err := nvdapi.GetCPEs(tt.Client, tt.Params)
+			resp, err := nvdapi.GetCPEs(tt.Client, tt.Params, opts...)
 
 			assert.Equal(tt.ExpectedResponse, resp)
 			assert.Equal(tt.ExpectedErr, err)

@@ -1,14 +1,5 @@
 package nvdapi
 
-import (
-	"encoding/json"
-	"io"
-	"net/http"
-	"net/url"
-
-	"github.com/gorilla/schema"
-)
-
 type AddOns string
 
 var (
@@ -24,10 +15,9 @@ type GetCVEParams struct {
 }
 
 // GetCVE fetches and returns the CVE given the parameters.
-func GetCVE(client HTTPClient, params GetCVEParams) (*CVEResponse, error) {
+func GetCVE(client HTTPClient, params GetCVEParams, opts ...Option) (*CVEResponse, error) {
 	resp := &CVEResponse{}
-	err := getEndp(client, "cve/1.0/"+params.CVE, params, resp)
-	if err != nil {
+	if err := getEndp(client, "cve/1.0/"+params.CVE, params, resp, opts...); err != nil {
 		return nil, err
 	}
 	return resp, nil
@@ -55,47 +45,10 @@ type GetCVEsParams struct {
 }
 
 // GetCVEs fetches and returns the CVEs given the parameters.
-func GetCVEs(client HTTPClient, params GetCVEsParams) (*CVEResponse, error) {
+func GetCVEs(client HTTPClient, params GetCVEsParams, opts ...Option) (*CVEResponse, error) {
 	resp := &CVEResponse{}
-	err := getEndp(client, "cves/1.0", params, resp)
-	if err != nil {
+	if err := getEndp(client, "cves/1.0", params, resp, opts...); err != nil {
 		return nil, err
 	}
 	return resp, nil
-}
-
-func getEndp(client HTTPClient, endp string, params, dst interface{}) error {
-	if client == nil {
-		return ErrNilClient
-	}
-
-	// Build the request
-	req, _ := http.NewRequest(http.MethodGet, "https://services.nvd.nist.gov/rest/json/"+endp, nil)
-	form := url.Values{}
-	_ = schema.NewEncoder().Encode(params, form)
-	req.URL.RawQuery = form.Encode()
-
-	// Issue the request
-	res, err := client.Do(req)
-	if err != nil {
-		return err
-	}
-	defer res.Body.Close()
-	body, _ := io.ReadAll(res.Body)
-
-	// Check status code
-	if res.StatusCode != http.StatusOK {
-		return &ErrUnexpectedStatus{
-			Body:       body,
-			StatusCode: res.StatusCode,
-		}
-	}
-
-	// Unmarshal response
-	err = json.Unmarshal(body, dst)
-	if err != nil {
-		return err
-	}
-
-	return nil
 }

@@ -1,6 +1,7 @@
 package nvdapi_test
 
 import (
+	"context"
 	"encoding/json"
 	"errors"
 	"io"
@@ -14,6 +15,10 @@ var (
 
 	errFake            = errors.New("this is a fake error")
 	errJsonSyntaxError = json.Unmarshal([]byte(jsonSyntaxError), &struct{}{})
+
+	opts = []nvdapi.Option{
+		nvdapi.WithContext(context.Background()),
+	}
 )
 
 // FakeHTTPClient is an implementation of HTTPClient that

@@ -12,10 +12,9 @@ type GetCPEParams struct {
 	StartIndex        *int    `schema:"startIndex,omitempty"`
 }
 
-func GetCPEs(client HTTPClient, params GetCPEParams) (*CPEResponse, error) {
+func GetCPEs(client HTTPClient, params GetCPEParams, opts ...Option) (*CPEResponse, error) {
 	resp := &CPEResponse{}
-	err := getEndp(client, "cpes/1.0/", params, resp)
-	if err != nil {
+	if err := getEndp(client, "cpes/1.0/", params, resp, opts...); err != nil {
 		return nil, err
 	}
 	return resp, nil
