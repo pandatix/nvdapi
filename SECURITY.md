@@ -1,6 +1,6 @@
 # Reporting Security Issues
 
-Please report any security issues you discovered in the API to lucas.tesson@protonmail.com.
+Please report any security issues you discovered in the API to lucastesson@protonmail.com.
 
 We will assess the risk, plus make a fix available before we create a GitHub issue.
 
