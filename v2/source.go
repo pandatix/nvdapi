@@ -12,7 +12,7 @@ type SourceParams struct {
 
 func GetSource(client common.HTTPClient, params SourceParams, opts ...common.Option) (*SourceResponse, error) {
 	resp := &SourceResponse{}
-	if err := getEndp(client, "", params, &resp, opts...); err != nil {
+	if err := getEndp(client, "source/2.0", params, &resp, opts...); err != nil {
 		return nil, err
 	}
 	return resp, nil
