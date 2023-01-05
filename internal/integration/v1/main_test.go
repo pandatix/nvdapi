@@ -1,13 +1,9 @@
-package integration_test
+package v1_test
 
 import (
 	"fmt"
 	"os"
 	"testing"
-)
-
-var (
-	apiKey string
 )
 
 func TestMain(m *testing.M) {
@@ -21,3 +17,5 @@ func TestMain(m *testing.M) {
 
 	os.Exit(m.Run())
 }
+
+var apiKey string

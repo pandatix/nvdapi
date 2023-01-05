@@ -4,7 +4,8 @@ import (
 	"net/http"
 	"testing"
 
-	"github.com/pandatix/nvdapi"
+	"github.com/pandatix/nvdapi/common"
+	"github.com/pandatix/nvdapi/v1"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -12,7 +13,7 @@ func TestGetCVE(t *testing.T) {
 	t.Parallel()
 
 	var tests = map[string]struct {
-		Client           nvdapi.HTTPClient
+		Client           common.HTTPClient
 		Params           nvdapi.GetCVEParams
 		ExpectedResponse *nvdapi.CVEResponse
 		ExpectedErr      error
@@ -21,7 +22,7 @@ func TestGetCVE(t *testing.T) {
 			Client:           nil,
 			Params:           nvdapi.GetCVEParams{},
 			ExpectedResponse: nil,
-			ExpectedErr:      nvdapi.ErrNilClient,
+			ExpectedErr:      common.ErrNilClient,
 		},
 		"failing-client": {
 			Client:           newFakeHTTPClient(``, 0, errFake),
@@ -33,7 +34,7 @@ func TestGetCVE(t *testing.T) {
 			Client:           newFakeHTTPClient(``, 0, nil),
 			Params:           nvdapi.GetCVEParams{},
 			ExpectedResponse: nil,
-			ExpectedErr: &nvdapi.ErrUnexpectedStatus{
+			ExpectedErr: &common.ErrUnexpectedStatus{
 				StatusCode: 0,
 				Body:       []byte(``),
 			},
@@ -206,7 +207,7 @@ func TestGetCVEs(t *testing.T) {
 	t.Parallel()
 
 	var tests = map[string]struct {
-		Client           nvdapi.HTTPClient
+		Client           common.HTTPClient
 		Params           nvdapi.GetCVEsParams
 		ExpectedResponse *nvdapi.CVEResponse
 		ExpectedErr      error
@@ -215,7 +216,7 @@ func TestGetCVEs(t *testing.T) {
 			Client:           nil,
 			Params:           nvdapi.GetCVEsParams{},
 			ExpectedResponse: nil,
-			ExpectedErr:      nvdapi.ErrNilClient,
+			ExpectedErr:      common.ErrNilClient,
 		},
 		"failing-client": {
 			Client:           newFakeHTTPClient(``, 0, errFake),
@@ -227,7 +228,7 @@ func TestGetCVEs(t *testing.T) {
 			Client:           newFakeHTTPClient(``, 0, nil),
 			Params:           nvdapi.GetCVEsParams{},
 			ExpectedResponse: nil,
-			ExpectedErr: &nvdapi.ErrUnexpectedStatus{
+			ExpectedErr: &common.ErrUnexpectedStatus{
 				StatusCode: 0,
 				Body:       []byte(``),
 			},

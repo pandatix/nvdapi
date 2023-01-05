@@ -1,10 +1,10 @@
-package integration_test
+package v1_test
 
 import (
 	"io"
 	"net/http"
 
-	"github.com/pandatix/nvdapi"
+	"github.com/pandatix/nvdapi/common"
 )
 
 type MdwClient struct {
@@ -28,7 +28,7 @@ func (c *MdwClient) Do(req *http.Request) (*http.Response, error) {
 	return resp, nil
 }
 
-var _ nvdapi.HTTPClient = (*MdwClient)(nil)
+var _ common.HTTPClient = (*MdwClient)(nil)
 
 // FakeReadCloser mocks an io.ReadCloser.
 type fakeReadCloser struct {

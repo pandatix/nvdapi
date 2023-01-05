@@ -7,7 +7,7 @@ import (
 	"io"
 	"net/http"
 
-	"github.com/pandatix/nvdapi"
+	"github.com/pandatix/nvdapi/common"
 )
 
 var (
@@ -16,8 +16,8 @@ var (
 	errFake            = errors.New("this is a fake error")
 	errJsonSyntaxError = json.Unmarshal([]byte(jsonSyntaxError), &struct{}{})
 
-	opts = []nvdapi.Option{
-		nvdapi.WithContext(context.Background()),
+	opts = []common.Option{
+		common.WithContext(context.Background()),
 	}
 )
 
@@ -32,9 +32,9 @@ func (f fakeHTTPClient) Do(req *http.Request) (*http.Response, error) {
 	return f.Response, f.Err
 }
 
-var _ nvdapi.HTTPClient = (*fakeHTTPClient)(nil)
+var _ common.HTTPClient = (*fakeHTTPClient)(nil)
 
-func newFakeHTTPClient(body string, statusCode int, err error) nvdapi.HTTPClient {
+func newFakeHTTPClient(body string, statusCode int, err error) common.HTTPClient {
 	return &fakeHTTPClient{
 		Response: &http.Response{
 			StatusCode: statusCode,

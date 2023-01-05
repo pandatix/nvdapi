@@ -1,4 +1,4 @@
-package integration_test
+package v1_test
 
 import (
 	"bytes"
@@ -6,11 +6,11 @@ import (
 	"testing"
 	"time"
 
-	"github.com/pandatix/nvdapi"
+	"github.com/pandatix/nvdapi/v1"
 	"github.com/stretchr/testify/assert"
 )
 
-func TestGetCVE(t *testing.T) {
+func Test_V1_GetCVE(t *testing.T) {
 	var cves = []string{
 		"CVE-2015-5611",
 		"CVE-2020-14144",
@@ -38,8 +38,8 @@ func TestGetCVE(t *testing.T) {
 			_ = json.NewEncoder(buf).Encode(resp)
 
 			// Decode both to interfaces
-			var expected interface{}
-			var actual interface{}
+			var expected any
+			var actual any
 			_ = json.Unmarshal(client.LastBody, &expected)
 			_ = json.Unmarshal(buf.Bytes(), &actual)
 
@@ -50,7 +50,7 @@ func TestGetCVE(t *testing.T) {
 	}
 }
 
-func TestGetCVEs(t *testing.T) {
+func Test_V1_GetCVEs(t *testing.T) {
 	var tests = map[string]struct {
 		Params nvdapi.GetCVEsParams
 	}{
@@ -93,8 +93,8 @@ func TestGetCVEs(t *testing.T) {
 			_ = json.NewEncoder(buf).Encode(resp)
 
 			// Decode both to interfaces
-			var expected interface{}
-			var actual interface{}
+			var expected any
+			var actual any
 			_ = json.Unmarshal(client.LastBody, &expected)
 			_ = json.Unmarshal(buf.Bytes(), &actual)
 

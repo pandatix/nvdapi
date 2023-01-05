@@ -4,7 +4,8 @@ import (
 	"net/http"
 	"testing"
 
-	"github.com/pandatix/nvdapi"
+	"github.com/pandatix/nvdapi/common"
+	"github.com/pandatix/nvdapi/v1"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -12,7 +13,7 @@ func TestGetCPEs(t *testing.T) {
 	t.Parallel()
 
 	var tests = map[string]struct {
-		Client           nvdapi.HTTPClient
+		Client           common.HTTPClient
 		Params           nvdapi.GetCPEParams
 		ExpectedResponse *nvdapi.CPEResponse
 		ExpectedErr      error
@@ -21,7 +22,7 @@ func TestGetCPEs(t *testing.T) {
 			Client:           nil,
 			Params:           nvdapi.GetCPEParams{},
 			ExpectedResponse: nil,
-			ExpectedErr:      nvdapi.ErrNilClient,
+			ExpectedErr:      common.ErrNilClient,
 		},
 		"failing-client": {
 			Client:           newFakeHTTPClient(``, 0, errFake),
@@ -33,7 +34,7 @@ func TestGetCPEs(t *testing.T) {
 			Client:           newFakeHTTPClient(``, 0, nil),
 			Params:           nvdapi.GetCPEParams{},
 			ExpectedResponse: nil,
-			ExpectedErr: &nvdapi.ErrUnexpectedStatus{
+			ExpectedErr: &common.ErrUnexpectedStatus{
 				StatusCode: 0,
 				Body:       []byte(``),
 			},

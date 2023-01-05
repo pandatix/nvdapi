@@ -1,5 +1,7 @@
 package nvdapi
 
+import "github.com/pandatix/nvdapi/common"
+
 type AddOns string
 
 var (
@@ -15,9 +17,9 @@ type GetCVEParams struct {
 }
 
 // GetCVE fetches and returns the CVE given the parameters.
-func GetCVE(client HTTPClient, params GetCVEParams, opts ...Option) (*CVEResponse, error) {
+func GetCVE(client common.HTTPClient, params GetCVEParams, opts ...common.Option) (*CVEResponse, error) {
 	resp := &CVEResponse{}
-	if err := getEndp(client, "cve/1.0/"+params.CVE, params, resp, opts...); err != nil {
+	if err := common.GetEndp(client, "cve/1.0/"+params.CVE, params, resp, opts...); err != nil {
 		return nil, err
 	}
 	return resp, nil
@@ -45,9 +47,9 @@ type GetCVEsParams struct {
 }
 
 // GetCVEs fetches and returns the CVEs given the parameters.
-func GetCVEs(client HTTPClient, params GetCVEsParams, opts ...Option) (*CVEResponse, error) {
+func GetCVEs(client common.HTTPClient, params GetCVEsParams, opts ...common.Option) (*CVEResponse, error) {
 	resp := &CVEResponse{}
-	if err := getEndp(client, "cves/1.0", params, resp, opts...); err != nil {
+	if err := common.GetEndp(client, "cves/1.0", params, resp, opts...); err != nil {
 		return nil, err
 	}
 	return resp, nil

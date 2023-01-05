@@ -1,4 +1,4 @@
-package nvdapi
+package common
 
 import (
 	"context"
@@ -45,7 +45,8 @@ type Option interface {
 }
 
 type options struct {
-	Ctx context.Context
+	Ctx    context.Context
+	APIKey *string
 }
 
 type ctxOption struct {
@@ -54,6 +55,13 @@ type ctxOption struct {
 
 func (opt ctxOption) apply(opts *options) {
 	opts.Ctx = opt.ctx
+}
+
+type apiKeyOption string
+
+func (opt apiKeyOption) apply(opts *options) {
+	str := (string)(opt)
+	opts.APIKey = &str
 }
 
 // WithContext defines the context to use when executing
@@ -65,7 +73,16 @@ func WithContext(ctx context.Context) Option {
 	}
 }
 
-func getEndp(client HTTPClient, endp string, params, dst interface{}, opts ...Option) error {
+// WithAPIKey defines the API keyto use when executing the
+// HTTP request.
+// Default won't set the HTTP header in the request.
+func WithAPIKey(apiKey string) Option {
+	opt := apiKeyOption(apiKey)
+	return &opt
+}
+
+// GetEndp is an internal function, working as a helper.
+func GetEndp(client HTTPClient, endp string, params, dst any, opts ...Option) error {
 	if client == nil {
 		return ErrNilClient
 	}
@@ -80,9 +97,16 @@ func getEndp(client HTTPClient, endp string, params, dst interface{}, opts ...Op
 
 	// Build the request
 	req, _ := http.NewRequestWithContext(reqopts.Ctx, http.MethodGet, "https://services.nvd.nist.gov/rest/json/"+endp, nil)
-	form := url.Values{}
-	_ = schema.NewEncoder().Encode(params, form)
-	req.URL.RawQuery = form.Encode()
+	if reqopts.APIKey != nil {
+		req.Header.Add("apiKey", *reqopts.APIKey)
+	}
+
+	// Set params if any
+	if params != nil {
+		form := url.Values{}
+		_ = schema.NewEncoder().Encode(params, form)
+		req.URL.RawQuery = form.Encode()
+	}
 
 	// Issue the request
 	res, err := client.Do(req)
@@ -104,7 +128,7 @@ func getEndp(client HTTPClient, endp string, params, dst interface{}, opts ...Op
 	}
 
 	// Unmarshal response
-	if err = json.Unmarshal(body, dst); err != nil {
+	if err := json.Unmarshal(body, dst); err != nil {
 		return err
 	}
 

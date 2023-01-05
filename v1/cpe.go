@@ -1,5 +1,7 @@
 package nvdapi
 
+import "github.com/pandatix/nvdapi/common"
+
 type GetCPEParams struct {
 	AddOns            *AddOns `schema:"addOns,omitempty"`
 	APIKey            *string `schema:"apiKey,omitempty"`
@@ -12,9 +14,9 @@ type GetCPEParams struct {
 	StartIndex        *int    `schema:"startIndex,omitempty"`
 }
 
-func GetCPEs(client HTTPClient, params GetCPEParams, opts ...Option) (*CPEResponse, error) {
+func GetCPEs(client common.HTTPClient, params GetCPEParams, opts ...common.Option) (*CPEResponse, error) {
 	resp := &CPEResponse{}
-	if err := getEndp(client, "cpes/1.0/", params, resp, opts...); err != nil {
+	if err := common.GetEndp(client, "cpes/1.0/", params, resp, opts...); err != nil {
 		return nil, err
 	}
 	return resp, nil

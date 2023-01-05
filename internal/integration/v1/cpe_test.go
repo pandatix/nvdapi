@@ -1,4 +1,4 @@
-package integration_test
+package v1_test
 
 import (
 	"bytes"
@@ -6,11 +6,11 @@ import (
 	"testing"
 	"time"
 
-	"github.com/pandatix/nvdapi"
+	"github.com/pandatix/nvdapi/v1"
 	"github.com/stretchr/testify/assert"
 )
 
-func TestGetCPEs(t *testing.T) {
+func Test_V1_GetCPEs(t *testing.T) {
 	assert := assert.New(t)
 	defer time.Sleep(6 * time.Second)
 
@@ -29,8 +29,8 @@ func TestGetCPEs(t *testing.T) {
 	_ = json.NewEncoder(buf).Encode(resp)
 
 	// Decode both to interfaces
-	var expected interface{}
-	var actual interface{}
+	var expected any
+	var actual any
 	_ = json.Unmarshal(client.LastBody, &expected)
 	_ = json.Unmarshal(buf.Bytes(), &actual)
 
