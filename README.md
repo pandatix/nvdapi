@@ -2,20 +2,27 @@
 
 [![reference](https://godoc.org/github.com/pandatix/nvdapi/v5?status.svg=)](https://pkg.go.dev/github.com/pandatix/nvdapi)
 [![go report](https://goreportcard.com/badge/github.com/pandatix/nvdapi)](https://goreportcard.com/report/github.com/pandatix/nvdapi)
-[![codecov](https://codecov.io/gh/pandatix/nvdapi/branch/main/graph/badge.svg?token=2I1BWR43GI)](https://codecov.io/gh/pandatix/nvdapi)
+[![Coverage Status](https://coveralls.io/repos/github/pandatix/nvdapi/badge.svg?branch=master)](https://coveralls.io/github/pandatix/nvdapi?branch=master)
 [![CI](https://github.com/pandatix/nvdapi/actions/workflows/ci.yaml/badge.svg)](https://github.com/pandatix/nvdapi/actions?query=workflow%3Aci+)
+[![CodeQL](https://github.com/pandatix/nvdapi/actions/workflows/codeql-analysis.yml/badge.svg)](https://github.com/pandatix/nvdapi/actions/workflows/codeql-analysis.yml)
 
 The NVD API is an unofficial Go wrapper around the [NVD API](https://nvd.nist.gov/General/News/New-NVD-CVE-CPE-API-and-SOAP-Retirement).
 
-Supports:
- - [X] [CVE](https://nvd.nist.gov/developers/vulnerabilities)
- - [X] [CPE](https://nvd.nist.gov/developers/products)
+It supports both API v1 and v2 with full support of endpoints.
+Notice that this Go module **does not** enforce the [recommended](https://nvd.nist.gov/developers/start-here#divBestPractices) 6 second wait between each request.
 
 This product uses the NVD API but is not endorsed or certified by the NVD.
 
+ - [How to use](#how-to-use)
+ - [How to contribute](#how-to-contribute)
+ - [Contact](#contact)
+ - [Reviews on the API](#reviews-on-the-api)
+   - [v1](#v1)
+   - [v2](#v2)
+
 ## How to use
 
-The following shows how to basically use the wrapper to get all the CVEs for a given keyword.
+The following shows how to basically use the wrapper to get a CPE for a given wide CPE match string.
 
 ```golang
 package main
@@ -25,21 +32,26 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/pandatix/nvdapi"
+	"github.com/pandatix/nvdapi/v2"
 )
 
 func main() {
-	// Configure and execute the request
-	resp, err := nvdapi.GetCVEs(&http.Client{}, nvdapi.GetCVEsParams{
-		Keyword: ptr("gitea"),
+	apiKey := "<your_nvd_api_key>"
+	client, err := nvdapi.NewNVDClient(&http.Client{}, apiKey)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	resp, err := nvdapi.GetCPEs(client, nvdapi.GetCPEsParams{
+		CPEMatchString: ptr("cpe:2.3:*:microsoft"),
+		ResultsPerPage: ptr(1),
 	})
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	// Print each CVE's ID
-	for _, item := range resp.Result.CVEItems {
-		fmt.Println(item.CVE.CVEDataMeta.ID)
+	for _, prod := range resp.Products {
+		fmt.Println(prod.CPE.CPEName)
 	}
 }
 
@@ -48,7 +60,20 @@ func ptr[T any](t T) *T {
 }
 ```
 
+## How to contribute
+
+Please read first the [code of conduct](https://github.com/pandatix/nvdapi/blob/master/CODE_OF_CONDUCT.md).
+
+To contribute, please refer to [the contribution guide](https://github.com/pandatix/nvdapi/blob/master/CONTRIBUTING.md).
+
+## Contact
+
+To provide feedbacks or submitting an issue, please [file and issue](https://github.com/pandatix/nvdapi/issues).
+In case it's regarding a security issue, refers to the [Security guide](https://github.com/pandatix/nvdapi/blob/master/SECURITY.md).
+
 ## Reviews on the API
+
+### v1
 
 While giving the JSON schema of both main endpoints (CVE and CPE) was a really good practice to enable implementations in various languages and to avoid guessing types, structures and descriptions (what each field means, its goal(s) and how it should get formatted), there are a few things that could get changed to improve this schema. Notice in the last version of the documentation, some requirements changed, and the quality of the schema decreased as we only know how are structured the high-level fields.
 
@@ -65,13 +90,14 @@ Notice also that there would be a N+1 issue on the CVE/CPE schema merge where a 
 Another notice is that types that needs validation (based on regex for URIs, emails addresses, or bound for Subscore) can be enforced by GraphQL Scalars.
 Finally, the API key mecanism that is currently being implemented can also work for a GraphQL API, in the queries datastructure or using headers.
 
-## How to contribute
+### v2
 
-Please read first the [code of conduct](https://github.com/pandatix/nvdapi/blob/master/CODE_OF_CONDUCT.md).
+In the last decade, the NVD grew beyond what was expected years ago, for the best.
+This implied a lot of changes, especially with the NVD API. Some feedbacks on it follows.
 
-To contribute, please refers to [the contribution guide](https://github.com/pandatix/nvdapi/blob/master/CONTRIBUTING.md).
-
-## Contact
-
-To provide feedbacks or submitting an issue, please [file and issue](https://github.com/pandatix/nvdapi/issues).
-In case it's regarding a security issue, refers to the [Security guide](https://github.com/pandatix/nvdapi/blob/master/SECURITY.md).
+ - The limit of 2000 results per query (see [documentation](https://nvd.nist.gov/developers/vulnerabilities#divGetCves) for pagination and experimental calls to the API for current limit) enforce the creation of new workflows. For instance, if you are working with an Offline First approach, you'll want to download the whole NVD. The full download is no longer possible through the `.json.zip` files, so you'll need calls to the API. Each call needs a 6 second wait between each, in order to be compliant with official recommandations. With more than 200k CVEs, it imply >100 requests, so >600s of wait (10 min). In addition, with network and disk IO latencies, a full download of the NVD could take up to 12 minutes with a good connectivity. The previous workflow would take around 20 seconds where the new would take around 12 minutes, which is an important decrease of performances. To avoid it, developers would have to create a proxy that handles the paginated download and exposes a JSON ZIP dump of it.
+ - All the workflows don't need the whole data. As for the v1 feedback, a GraphQL API could be a good approach to restrein to what the developer really need. Notice that all the current functionalities would be conserved.
+ - The CVE History can have a "Changed" action to a detail while being the First Analysis. This is a nonsense as the first details can't be changed from previous values... as they are new.
+ - In the [Source schema](https://csrc.nist.gov/schema/nvd/api/2.0/source_api_json_2.0.schema), the source definition don't have property `name` that is indeed returned in the API.
+ - The boolean parameters (for instance, the `cves` endpoint have optional parameters `hasCertAlerts`, `hasCertNotes`, `hasKev`, `hasOval`, `isVulnerable`, `keywordExactMatch` and `noRejected`). Those are specified in the query without a parameter value, despite the conventions used by the HTTP community since years. This imply that, for instance with this Go module, it was necessary to develop a specific query encoder to fit this use case. This problem would not be one if it does not had operational drawbacks, but there is one. An optional boolean information could have **3** states that imply different things : **not specified** (imply that it is not important, it could be true or false, so it does not filter on this criteria), **specified to true** (imply that it filters the criteria on true, so it removes all the false results) and **specified to false** (imply that it filters the criteria on false, so it removes all the true results). Using the current NVD strategy, you could only have 2 states : not specified and specified to true. In case you want to filter on false, you have to take them all without specifying it, then take them all with specified to true, then exclude results from second to first. This workflow is a complete nonsense for many obvious reasons. For instance, let's suppose you work for a security company that wants to write private OVAL descriptions for its clients. You'll want to get CVEs that matches a CPE criteria (to limit to your clients needs) and does not have an OVAL file. You'll have to get all the CVEs that matches this criteria, then restart with `hasOval` specified and removes from the whole set the results of the last. Finally, after minutes of unnecessary computation due to the fact that you can't send the `hasOval=false` parameter, you could work on your OVAL descriptions. This idea could be propagated to all the other parameters. The best solution is to go back to the convention used by everyone since years i.e. have a **parameter value for optional boolean parameters**.
+ - The new endpoints (source, cpematch and cvehistory) are good to have, as they were missing from the v1. In particular, the CVE history data were a real pain to get as you needed scrapping, but over 200k CVEs this could take days. This offers new possibilites in the study and statistics of the NVD dataset.
