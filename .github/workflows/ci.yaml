@@ -57,7 +57,6 @@ jobs:
         uses: shogo82148/actions-goveralls@v1
         with:
           path-to-profile: coverage.txt
-          github-token: ${{ secrets.COVERALLS_TOKEN }}
 
   go-lint:
     runs-on: ubuntu-latest
