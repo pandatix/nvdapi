@@ -51,12 +51,13 @@ type (
 	}
 
 	ChangeItem struct {
-		CVEID            string   `json:"cveId"`
-		EventName        string   `json:"eventName"`
-		CVEChangeID      string   `json:"cveChangeId"`
-		SourceIdentifier string   `json:"sourceIdentifier"`
-		Created          *string  `json:"created,omitempty"`
-		Details          []Detail `json:"details,omitempty"`
+		CVEID            string  `json:"cveId"`
+		EventName        string  `json:"eventName"`
+		CVEChangeID      string  `json:"cveChangeId"`
+		SourceIdentifier string  `json:"sourceIdentifier"`
+		Created          *string `json:"created,omitempty"`
+		// Details should be omitempty according to the schema, but is not experimentally
+		Details []Detail `json:"details"`
 	}
 
 	Detail struct {
