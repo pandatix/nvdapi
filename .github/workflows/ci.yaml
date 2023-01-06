@@ -52,11 +52,12 @@ jobs:
       - name: Run go test
         run: go test -v -race -coverprofile coverage.txt ./v1 ./v2
 
-      - name: Upload coverage to Codecov
+      - name: Upload coverage to Coveralls
         if: ${{ matrix.update-coverage }}
-        uses: codecov/codecov-action@v3
+        uses: shogo82148/actions-goveralls@v1
         with:
-          token: ${{ secrets.CODECOV_TOKEN }}
+          path-to-profile: coverage.txt
+          gtihub-token: ${{ secrets.COVERALLS_TOKEN }}
 
   go-lint:
     runs-on: ubuntu-latest
