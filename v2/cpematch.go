@@ -3,7 +3,7 @@ package nvdapi
 import "github.com/pandatix/nvdapi/common"
 
 type (
-	CPEMatchParams struct {
+	GetCPEMatchParams struct {
 		CVEID            *string `nvd:"cveId,omitempty,"`
 		LastModStartDate *string `nvd:"lastModStartDate,omitempty,"`
 		LastModEndDate   *string `nvd:"lastModEndDate,omitempty,"`
@@ -13,7 +13,7 @@ type (
 	}
 )
 
-func GetCPEMatch(client common.HTTPClient, params CPEMatchParams, opts ...common.Option) (*CPEMatchResponse, error) {
+func GetCPEMatch(client common.HTTPClient, params GetCPEMatchParams, opts ...common.Option) (*CPEMatchResponse, error) {
 	resp := &CPEMatchResponse{}
 	if err := getEndp(client, "cpematch/2.0", params, &resp, opts...); err != nil {
 		return nil, err
@@ -23,13 +23,17 @@ func GetCPEMatch(client common.HTTPClient, params CPEMatchParams, opts ...common
 
 type (
 	CPEMatchResponse struct {
-		ResultsPerPage int        `json:"resultsPerPage"`
-		StartIndex     int        `json:"startIndex"`
-		TotalResults   int        `json:"totalResults"`
-		Format         string     `json:"format"`
-		Version        string     `json:"version"`
-		Timestamp      string     `json:"timestamp"`
-		MatchStrings   []CPEMatch `json:"matchStrings"`
+		ResultsPerPage int           `json:"resultsPerPage"`
+		StartIndex     int           `json:"startIndex"`
+		TotalResults   int           `json:"totalResults"`
+		Format         string        `json:"format"`
+		Version        string        `json:"version"`
+		Timestamp      string        `json:"timestamp"`
+		MatchStrings   []MatchString `json:"matchStrings"`
+	}
+
+	MatchString struct {
+		MatchString CPEMatch `json:"matchString"`
 	}
 
 	CPEMatch struct {

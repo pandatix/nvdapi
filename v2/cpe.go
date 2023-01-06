@@ -2,19 +2,19 @@ package nvdapi
 
 import "github.com/pandatix/nvdapi/common"
 
-type CPEParameters struct {
-	CPENameID         *string `json:"cpeNameId,omitempty"`
-	CPEMatchString    *string `json:"cpeMatchString,omitempty"`
-	KeywordExactMatch *bool   `json:"keywordExactMatch,omitempty"`
-	KeywordSearch     *string `json:"keywordSearch,omitempty"`
-	LastModStartDate  *string `json:"lastModStartDate,omitempty"`
-	LastModEndDate    *string `json:"lastModEndDate,omitempty"`
-	MatchCriteriaId   *string `json:"matchCriteriaId,omitempty"`
-	ResultsPerPage    *int    `json:"resultsPerPage,omitempty"`
-	StartIndex        *int    `json:"startIndex,omitempty"`
+type GetCPEsParams struct {
+	CPENameID         *string `nvd:"cpeNameId,omitempty,"`
+	CPEMatchString    *string `nvd:"cpeMatchString,omitempty,"`
+	KeywordExactMatch *bool   `nvd:"keywordExactMatch,omitempty,"`
+	KeywordSearch     *string `nvd:"keywordSearch,omitempty,"`
+	LastModStartDate  *string `nvd:"lastModStartDate,omitempty,"`
+	LastModEndDate    *string `nvd:"lastModEndDate,omitempty,"`
+	MatchCriteriaId   *string `nvd:"matchCriteriaId,omitempty,"`
+	ResultsPerPage    *int    `nvd:"resultsPerPage,omitempty,"`
+	StartIndex        *int    `nvd:"startIndex,omitempty,"`
 }
 
-func GetCPEs(client common.HTTPClient, params CPEParameters, opts ...common.Option) (*CPEResponse, error) {
+func GetCPEs(client common.HTTPClient, params GetCPEsParams, opts ...common.Option) (*CPEResponse, error) {
 	resp := &CPEResponse{}
 	if err := getEndp(client, "cpes/2.0/", params, &resp, opts...); err != nil {
 		return nil, err
@@ -24,13 +24,17 @@ func GetCPEs(client common.HTTPClient, params CPEParameters, opts ...common.Opti
 
 type (
 	CPEResponse struct {
-		ResultsPerPage int    `json:"resultsPerPage"`
-		StartIndex     int    `json:"startIndex"`
-		TotalResults   int    `json:"totalResults"`
-		Format         string `json:"format"`
-		Version        string `json:"version"`
-		Timestamp      string `json:"timestamp"`
-		Products       []CPE  `json:"products"`
+		ResultsPerPage int          `json:"resultsPerPage"`
+		StartIndex     int          `json:"startIndex"`
+		TotalResults   int          `json:"totalResults"`
+		Format         string       `json:"format"`
+		Version        string       `json:"version"`
+		Timestamp      string       `json:"timestamp"`
+		Products       []CPEProduct `json:"products"`
+	}
+
+	CPEProduct struct {
+		CPE CPE `json:"cpe"`
 	}
 
 	CPE struct {

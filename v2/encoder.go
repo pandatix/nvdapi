@@ -63,6 +63,10 @@ func encode(params any) (out string) {
 			// In this case, will be false.
 			// It is problematic as you can't differentiate the complementary binary sets.
 
+		case reflect.TypeOf(EventName("")).Kind():
+			// Special kind involved in GetCVEHistoryParams
+			elems = append(elems, pts[0]+"="+url.QueryEscape(f.String()))
+
 		default:
 			panic(fmt.Sprintf("unhandled type : %v", f.Kind()))
 		}

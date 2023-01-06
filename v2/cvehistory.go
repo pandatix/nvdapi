@@ -2,13 +2,13 @@ package nvdapi
 
 import "github.com/pandatix/nvdapi/common"
 
-type CVEHistoryParams struct {
-	ChangeStartDate *string    `json:"changeStartDate,omitempty"`
-	ChangeEndDate   *string    `json:"changeEndDate,omitempty"`
-	CVEID           *string    `json:"cveId,omitempty"`
-	EventName       *EventName `json:"eventName,omitempty"`
-	ResultsPerPage  *int       `json:"resultsPerPage,omitempty"`
-	StartIndex      *int       `json:"startIndex,omitempty"`
+type GetCVEHistoryParams struct {
+	ChangeStartDate *string    `nvd:"changeStartDate,omitempty,"`
+	ChangeEndDate   *string    `nvd:"changeEndDate,omitempty,"`
+	CVEID           *string    `nvd:"cveId,omitempty,"`
+	EventName       *EventName `nvd:"eventName,omitempty,"`
+	ResultsPerPage  *int       `nvd:"resultsPerPage,omitempty,"`
+	StartIndex      *int       `nvd:"startIndex,omitempty,"`
 }
 
 type EventName string
@@ -27,7 +27,7 @@ var (
 	EventCVEUnrejected       EventName = "CVE Unrejected"
 )
 
-func GetCVEHistory(client common.HTTPClient, params CVEHistoryParams, opts ...common.Option) (*CVEHistoryResponse, error) {
+func GetCVEHistory(client common.HTTPClient, params GetCVEHistoryParams, opts ...common.Option) (*CVEHistoryResponse, error) {
 	resp := &CVEHistoryResponse{}
 	if err := getEndp(client, "cvehistory/2.0", params, &resp, opts...); err != nil {
 		return nil, err
@@ -43,7 +43,7 @@ type (
 		Format         string   `json:"format"`
 		Version        string   `json:"version"`
 		Timestamp      string   `json:"timestamp"`
-		CVEChanges     []Change `json:"cveChange,omitempty"`
+		CVEChanges     []Change `json:"cveChanges,omitempty"`
 	}
 
 	Change struct {

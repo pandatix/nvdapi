@@ -2,7 +2,7 @@ package nvdapi
 
 import "github.com/pandatix/nvdapi/common"
 
-type SourceParams struct {
+type GetSourceParams struct {
 	LastModStartDate *string `nvd:"lastModStartDate,omitempty,"`
 	LastModEndDate   *string `nvd:"lastModEndDate,omitempty,"`
 	ResultsPerPage   *int    `nvd:"resultsPerPage,omitempty,"`
@@ -10,7 +10,7 @@ type SourceParams struct {
 	StartIndex       *int    `nvd:"startIndex,omitempty,"`
 }
 
-func GetSource(client common.HTTPClient, params SourceParams, opts ...common.Option) (*SourceResponse, error) {
+func GetSource(client common.HTTPClient, params GetSourceParams, opts ...common.Option) (*SourceResponse, error) {
 	resp := &SourceResponse{}
 	if err := getEndp(client, "source/2.0", params, &resp, opts...); err != nil {
 		return nil, err
@@ -30,6 +30,9 @@ type (
 	}
 
 	Source struct {
+		// Name is not specified in the JSON Source Schema
+		Name *string `json:"name,omitempty"`
+
 		ContactEmail       *string      `json:"contactEmail,omitempty"`
 		LastModified       string       `json:"lastModified"`
 		Created            string       `json:"created"`
