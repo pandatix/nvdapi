@@ -5,8 +5,8 @@ import "github.com/pandatix/nvdapi/common"
 type GetCPEParams struct {
 	AddOns            *AddOns `schema:"addOns,omitempty"`
 	APIKey            *string `schema:"apiKey,omitempty"`
-	CPEMatchString    *string `schela:"cpeMatchString,omitempty"`
-	IncludeDeprecated *bool   `schema:"includeDeprecated"`
+	CPEMatchString    *string `schema:"cpeMatchString,omitempty"`
+	IncludeDeprecated *bool   `schema:"includeDeprecated,omitempty"`
 	Keyword           *string `schema:"keyword,omitempty"`
 	ModStartDate      *string `schema:"modStartDate,omitempty"`
 	ModEndDate        *string `schema:"modEndDate,omitempty"`
