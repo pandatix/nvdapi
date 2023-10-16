@@ -67,7 +67,7 @@ jobs:
 
       - name: Download assets
         env:
-          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           PROVENANCE: "${{ needs.provenance.outputs.provenance-name }}"
         run: |
           set -euo pipefail
