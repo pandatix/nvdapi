@@ -1,5 +1,3 @@
-# NVD API
-
 <div align="center">
 	<h1>NVD API</h1>
 	<a href="https://pkg.go.dev/github.com/pandatix/nvdapi"><img src="https://shields.io/badge/-reference-blue?logo=go&style=for-the-badge" alt="reference"></a>
