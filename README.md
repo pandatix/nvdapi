@@ -69,14 +69,14 @@ func ptr[T any](t T) *T {
 
 ## How to contribute
 
-Please read first the [code of conduct](https://github.com/pandatix/nvdapi/blob/master/CODE_OF_CONDUCT.md).
+Please read first the [code of conduct](https://github.com/pandatix/nvdapi/blob/main/CODE_OF_CONDUCT.md).
 
-To contribute, please refer to [the contribution guide](https://github.com/pandatix/nvdapi/blob/master/CONTRIBUTING.md).
+To contribute, please refer to [the contribution guide](https://github.com/pandatix/nvdapi/blob/main/CONTRIBUTING.md).
 
 ## Contact
 
 To provide feedbacks or submitting an issue, please [file and issue](https://github.com/pandatix/nvdapi/issues).
-In case it's regarding a security issue, refers to the [Security guide](https://github.com/pandatix/nvdapi/blob/master/SECURITY.md).
+In case it's regarding a security issue, refers to the [Security guide](https://github.com/pandatix/nvdapi/blob/main/SECURITY.md).
 
 ## Reviews on the API
 
