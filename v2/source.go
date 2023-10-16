@@ -39,7 +39,8 @@ type (
 		V2AcceptanceLevel  *AcceptLevel `json:"v2AcceptanceLevel,omitempty"`
 		V3AcceptanceLevel  *AcceptLevel `json:"v3AcceptanceLevel,omitempty"`
 		CWEAcceptanceLevel *AcceptLevel `json:"cweAcceptanceLevel,omitempty"`
-		SourceIdentifiers  []string     `json:"sourceIdentifiers"`
+		// SourceIdentifers is specified as a required property of the source object in the JSON Source Schema
+		SourceIdentifiers []string `json:"sourceIdentifiers,omitempty"`
 	}
 
 	AcceptLevel struct {
