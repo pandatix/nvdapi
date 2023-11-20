@@ -27,10 +27,10 @@ type GetCVEsParams struct {
 	ResultsPerPage     *int    `nvd:"resultsPerPage,omitempty,"`
 	StartIndex         *int    `nvd:"startIndex,omitempty,"`
 	SourceIdentifier   *string `nvd:"sourceIdentifier,omitempty,"`
-	VersionStart       *string `nvd:"versionStart,omitempty"`
-	VersionStartType   *string `nvd:"versionStartType,omitempty"`
-	VersionEnd         *string `nvd:"versionEnd,omitempty"`
-	VersionEndType     *string `nvd:"versionEndType,omitempty"`
+	VersionStart       *string `nvd:"versionStart,omitempty,"`
+	VersionStartType   *string `nvd:"versionStartType,omitempty,"`
+	VersionEnd         *string `nvd:"versionEnd,omitempty,"`
+	VersionEndType     *string `nvd:"versionEndType,omitempty,"`
 	VirtualMatchString *string `nvd:"virtualMatchString,omitempty,"`
 }
 
