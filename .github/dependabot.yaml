@@ -5,6 +5,8 @@ updates:
     directory: "/"
     schedule:
       interval: "weekly"
+    assignees:
+      - "pandatix"
   
   # Go module
   - package-ecosystem: "gomod"
