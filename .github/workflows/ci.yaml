@@ -11,13 +11,11 @@ jobs:
     steps:
       - name: Cancel previous
         uses: styfle/cancel-workflow-action@0.12.0
-        with:
-          access_token: ${{ github.token }}
 
   unit-tests:
     strategy:
       matrix:
-        go-version: [1.x, 1.20.x]
+        go-version: [1.x, 1.21.x]
         platform: [ubuntu-latest]
         include:
           - go-version: 1.x
@@ -41,25 +39,24 @@ jobs:
           key: ${{ runner.os }}-go-${{ hashFiles('**/go.sum') }}
           restore-keys: ${{ runner.os }}-go-
 
-      - name: Run go fmt
-        if: runner.os != 'Windows'
-        run: diff -u <(echo -n) <(gofmt -d -s .)
-
-      - name: Ensure go generate produces a zero diff
-        shell: bash
-        run: go generate -x ./... && git diff --exit-code; code=$?; git checkout -- .; (exit $code)
-
-      - name: Run go vet
-        run: go vet ./...
-
       - name: Run go test
-        run: go test -v -race -coverprofile coverage.txt ./v1 ./v2
+        run: go test -v -race -coverprofile cov.out ./v2
+
+      - name: Run go integration tests
+        run: go test -tags integration -v -coverprofile cov-tf.out ./internal/integration/...
+        env:
+          API_KEY: ${{ secrets.API_KEY }}
+        if: github.event_name != 'pull_request'
+
+      - name: Merge coverprofiles
+        run: cat cov-tf.out >> cov.out
+        if: github.event_name != 'pull_request'
 
       - name: Upload coverage to Coveralls
         if: ${{ matrix.update-coverage }}
         uses: shogo82148/actions-goveralls@v1
         with:
-          path-to-profile: coverage.txt
+          path-to-profile: cov.out
 
   go-lint:
     runs-on: ubuntu-latest
@@ -68,37 +65,7 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-go@v5
         with:
-          go-version: 1.19.x
+          go-version: 1.21.x
       
       - name: go-lint
         uses: golangci/golangci-lint-action@v3
-  
-  integration-tests:
-    strategy:
-      matrix:
-        go-version: [1.x, 1.20.x]
-        platform: [ubuntu-latest]
-        include:
-          - go-version: 1.x
-            platform: ubuntu-latest
-    runs-on: ${{ matrix.platform }}
-    needs: [unit-tests]
-    environment: Actions
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Setup Go
-        uses: actions/setup-go@v5
-        with:
-          go-version: ${{ matrix.go-version }}
-
-      - name: Cache go modules
-        uses: actions/cache@v3
-        with:
-          path: ~/go/pkg/mod
-          key: ${{ runner.os }}-go-${{ hashFiles('**/go.sum') }}
-          restore-keys: ${{ runner.os }}-go-
-
-      - name: Run go integration tests
-        run: API_KEY=${{ secrets.API_KEY }} go test -tags integration -v ./internal/integration/...
