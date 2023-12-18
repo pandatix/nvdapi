@@ -13,7 +13,7 @@
 </div>
 
 It supports API v2 with full support of endpoints, and keep support of deprecated for v1 for the sake of History.
-Notice that this Go module **does not** enforce the [recommended](https://nvd.nist.gov/developers/start-here#divRateLimits) 6 second wait between each request.
+Notice that this Go module **does not** enforce the [recommended](https://nvd.nist.gov/developers/start-here#divRateLimits) rate limiting between each request.
 
 > **Warning**
 >
