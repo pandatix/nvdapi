@@ -1,5 +1,6 @@
 <div align="center">
 	<h1>NVD API</h1>
+	<p><b>Unofficial but convenient Go wrapper around the <a href="https://nvd.nist.gov/developers">NVD API</a></b></p>
 	<a href="https://pkg.go.dev/github.com/pandatix/nvdapi"><img src="https://shields.io/badge/-reference-blue?logo=go&style=for-the-badge" alt="reference"></a>
 	<a href="https://goreportcard.com/report/github.com/pandatix/nvdapi"><img src="https://goreportcard.com/badge/github.com/pandatix/nvdapi?style=for-the-badge" alt="go report"></a>
 	<a href="https://coveralls.io/github/pandatix/nvdapi?branch=main"><img src="https://img.shields.io/coverallsCoverage/github/pandatix/nvdapi?style=for-the-badge" alt="Coverage Status"></a>
@@ -11,16 +12,14 @@
 	<a href="https://securityscorecards.dev/viewer/?uri=github.com/pandatix/nvdapi"><img src="https://img.shields.io/ossf-scorecard/github.com/pandatix/nvdapi?label=openssf%20scorecard&style=for-the-badge" alt="OpenSSF Scoreboard"></a>
 </div>
 
-The NVD API is an unofficial Go wrapper around the [NVD API](https://nvd.nist.gov/General/News/New-NVD-CVE-CPE-API-and-SOAP-Retirement).
+It supports API v2 with full support of endpoints, and keep support of deprecated for v1 for the sake of History.
+Notice that this Go module **does not** enforce the [recommended](https://nvd.nist.gov/developers/start-here#divRateLimits) 6 second wait between each request.
 
-It supports both API v1 and v2 with full support of endpoints.
-Notice that this Go module **does not** enforce the [recommended](https://nvd.nist.gov/developers/start-here#divBestPractices) 6 second wait between each request.
-
-This product uses the NVD API but is not endorsed or certified by the NVD.
+> **Warning**
+>
+> This product uses the NVD API but is not endorsed or certified by the NVD.
 
  - [How to use](#how-to-use)
- - [How to contribute](#how-to-contribute)
- - [Contact](#contact)
  - [Reviews on the API](#reviews-on-the-api)
    - [v1](#v1)
    - [v2](#v2)
@@ -64,17 +63,6 @@ func ptr[T any](t T) *T {
 	return &t
 }
 ```
-
-## How to contribute
-
-Please read first the [code of conduct](https://github.com/pandatix/nvdapi/blob/main/CODE_OF_CONDUCT.md).
-
-To contribute, please refer to [the contribution guide](https://github.com/pandatix/nvdapi/blob/main/CONTRIBUTING.md).
-
-## Contact
-
-To provide feedbacks or submitting an issue, please [file and issue](https://github.com/pandatix/nvdapi/issues).
-In case it's regarding a security issue, refers to the [Security guide](https://github.com/pandatix/nvdapi/blob/main/SECURITY.md).
 
 ## Reviews on the API
 
