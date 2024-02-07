@@ -14,6 +14,7 @@ type GetCVEHistoryParams struct {
 type EventName string
 
 var (
+	EventCVEReceived         EventName = "CVE Received"
 	EventInitialAnalysis     EventName = "Initial Analysis"
 	EventReanalysis          EventName = "Reanalysis"
 	EventCVEModified         EventName = "CVE Modified"
@@ -25,6 +26,7 @@ var (
 	EventCWERemap            EventName = "CWE Remap"
 	EventCVERejected         EventName = "CVE Rejected"
 	EventCVEUnrejected       EventName = "CVE Unrejected"
+	EventCVECISAKEVUpdate    EventName = "CVE CISA KEV Update"
 )
 
 func GetCVEHistory(client common.HTTPClient, params GetCVEHistoryParams, opts ...common.Option) (*CVEHistoryResponse, error) {
