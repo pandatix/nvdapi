@@ -1,6 +1,6 @@
 module github.com/pandatix/nvdapi
 
-go 1.22
+go 1.22.1
 
 require (
 	github.com/gorilla/schema v1.2.1
