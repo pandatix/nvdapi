@@ -3,7 +3,7 @@ module github.com/pandatix/nvdapi
 go 1.22.1
 
 require (
-	github.com/gorilla/schema v1.2.1
+	github.com/gorilla/schema v1.3.0
 	github.com/stretchr/testify v1.9.0
 )
 
