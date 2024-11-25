@@ -76,6 +76,7 @@ type (
 		Weaknesses            []Weakness      `json:"weaknesses,omitempty"`
 		Configurations        []Config        `json:"configurations,omitempty"`
 		VendorComments        []VendorComment `json:"vendorComments,omitempty"`
+		CVETags               []string        `json:"cveTags,omitempty"`
 	}
 
 	LangString struct {
