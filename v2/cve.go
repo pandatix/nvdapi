@@ -5,16 +5,19 @@ import (
 )
 
 type GetCVEsParams struct {
-	CPEName            *string `nvd:"cpeName,omitempty,"`
-	CVEID              *string `nvd:"cveId,omitempty,"`
-	CVSSV2Metrics      *string `nvd:"cvssV2Metrics,omitempty,"`
-	CVSSV2Severity     *string `nvd:"cvssV2Severity,omitempty,"`
-	CVSSV3Metrics      *string `nvd:"cvssV3Metrics,omitempty,"`
-	CVSSV3Severity     *string `nvd:"cvssV3Severity,omitempty,"`
-	CWEID              *string `nvd:"cweId,omitempty,"`
-	HasCertAlerts      *bool   `nvd:"hasCertAlerts,omitempty,noValue"`
-	HasCertNotes       *bool   `nvd:"hasCertNotes,omitempty,noValue"`
-	HasKEV             *bool   `nvd:"hasKev,omitempty,noValue"`
+	CPEName        *string `nvd:"cpeName,omitempty,"`
+	CVEID          *string `nvd:"cveId,omitempty,"`
+	CVSSV2Metrics  *string `nvd:"cvssV2Metrics,omitempty,"`
+	CVSSV2Severity *string `nvd:"cvssV2Severity,omitempty,"`
+	CVSSV3Metrics  *string `nvd:"cvssV3Metrics,omitempty,"`
+	CVSSV3Severity *string `nvd:"cvssV3Severity,omitempty,"`
+	CWEID          *string `nvd:"cweId,omitempty,"`
+	// DEPRECATED as of official technical NIST NVD email (15 nov. 2024)
+	HasCertAlerts *bool `nvd:"hasCertAlerts,omitempty,noValue"`
+	// DEPRECATED as of official technical NIST NVD email (15 nov. 2024)
+	HasCertNotes *bool `nvd:"hasCertNotes,omitempty,noValue"`
+	HasKEV       *bool `nvd:"hasKev,omitempty,noValue"`
+	// DEPRECATED as of official technical NIST NVD email (15 nov. 2024)
 	HasOVAL            *bool   `nvd:"hasOval,omitempty,noValue"`
 	IsVulnerable       *bool   `nvd:"isVulnerable,omitempty,noValue"`
 	KeywordExactMatch  *bool   `nvd:"keywordExactMatch,omitempty,noValue"`
