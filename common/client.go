@@ -15,6 +15,8 @@ import (
 var (
 	// ErrNilClient is an error returned when a given HTTPClient is nil.
 	ErrNilClient = errors.New("given client is nil")
+	// BaseURL is the base path for all requests; redirect away from NIST if needed
+	BaseURL = "https://services.nvd.nist.gov/rest/json/"
 )
 
 // ErrUnexpectedStatus is an error meaning the API call returned a response
@@ -96,7 +98,7 @@ func GetEndp(client HTTPClient, endp string, params, dst any, opts ...Option) er
 	}
 
 	// Build the request
-	req, _ := http.NewRequestWithContext(reqopts.Ctx, http.MethodGet, "https://services.nvd.nist.gov/rest/json/"+endp, nil)
+	req, _ := http.NewRequestWithContext(reqopts.Ctx, http.MethodGet, BaseURL+endp, nil)
 	if reqopts.APIKey != nil {
 		req.Header.Add("apiKey", *reqopts.APIKey)
 	}
