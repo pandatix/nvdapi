@@ -17,6 +17,10 @@ var (
 	ErrNilClient = errors.New("given client is nil")
 )
 
+const (
+	nvdUrl = "https://services.nvd.nist.gov/rest/json/"
+)
+
 // ErrUnexpectedStatus is an error meaning the API call returned a response
 // with an unexpected status. It may occurs when the server is down or the
 // parameters/body is invalid.
@@ -96,7 +100,7 @@ func GetEndp(client HTTPClient, endp string, params, dst any, opts ...Option) er
 	}
 
 	// Build the request
-	req, _ := http.NewRequestWithContext(reqopts.Ctx, http.MethodGet, "https://services.nvd.nist.gov/rest/json/"+endp, nil)
+	req, _ := http.NewRequestWithContext(reqopts.Ctx, http.MethodGet, nvdUrl+endp, nil)
 	if reqopts.APIKey != nil {
 		req.Header.Add("apiKey", *reqopts.APIKey)
 	}
