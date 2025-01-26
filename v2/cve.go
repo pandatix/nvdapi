@@ -76,6 +76,7 @@ type (
 		Weaknesses            []Weakness      `json:"weaknesses,omitempty"`
 		Configurations        []Config        `json:"configurations,omitempty"`
 		VendorComments        []VendorComment `json:"vendorComments,omitempty"`
+		CVETags               []CVETag        `json:"cveTags"`
 	}
 
 	LangString struct {
@@ -248,9 +249,15 @@ type (
 		EnvironmentalSeverity         *string  `json:"environmentalSeverity,omitempty"`
 	}
 
+	CVETag struct {
+		SourceIdentifier string    `json:"sourceIdentifier"`
+		Tags             []TagEnum `json:"tags"`
+	}
+
 	TypeEnum     string
 	Subscore     float64 // min = 0 ; max = 10
 	OperatorEnum string
+	TagEnum      string
 )
 
 var (
@@ -259,4 +266,8 @@ var (
 
 	OperatorAnd OperatorEnum = "AND"
 	OperatorOr  OperatorEnum = "OR"
+
+	TagUnsupportedWhenAssigned  TagEnum = "unsupported-when-assigned"
+	TagExclusivelyHostedService TagEnum = "exclusively-hosted-service"
+	TagDisputed                 TagEnum = "disputed"
 )

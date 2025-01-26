@@ -38,6 +38,7 @@ type (
 		Created            string       `json:"created"`
 		V2AcceptanceLevel  *AcceptLevel `json:"v2AcceptanceLevel,omitempty"`
 		V3AcceptanceLevel  *AcceptLevel `json:"v3AcceptanceLevel,omitempty"`
+		V4AcceptanceLevel  *AcceptLevel `json:"v4AcceptanceLevel,omitempty"`
 		CWEAcceptanceLevel *AcceptLevel `json:"cweAcceptanceLevel,omitempty"`
 		// SourceIdentifers is specified as a required property of the source object in the JSON Source Schema
 		SourceIdentifiers []string `json:"sourceIdentifiers,omitempty"`
