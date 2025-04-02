@@ -32,13 +32,15 @@ jobs:
         run: go test ./v2 -v -coverprofile=cov.out
 
       - name: Run integration tests
-        run: go test ./internal/integration/v2 -tags integration -v -coverpkg="github.com/pandatix/nvdapi/v2" -coverprofile=cov-tf.out
+        run: go test ./internal/integration/v2 -v -coverpkg="github.com/pandatix/nvdapi/v2" -coverprofile=cov-tf.out
         env:
           API_KEY: ${{ secrets.API_KEY }}
         if: github.event_name != 'pull_request'
 
-      - name: Merge coverprofiles
-        run: tail -n +2 cov-tf.out >> cov.out
+      - name: Merge cover profiles
+        run: |
+          go install github.com/wadey/gocovmerge@v0.0.0-20160331181800-b5bfa59ec0ad
+          gocovmerge cov.out cov-tf.out > cov.out
         if: github.event_name != 'pull_request'
 
       - name: Upload coverage to Coveralls
