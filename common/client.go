@@ -117,7 +117,9 @@ func GetEndp(client HTTPClient, endp string, params, dst any, opts ...Option) er
 	if err != nil {
 		return err
 	}
-	defer res.Body.Close()
+	defer func() {
+		_ = res.Body.Close()
+	}()
 	body, err := io.ReadAll(res.Body)
 	if err != nil {
 		return err
