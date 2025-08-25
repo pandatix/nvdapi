@@ -4,7 +4,7 @@ go 1.23.2
 
 require (
 	github.com/gorilla/schema v1.4.1
-	github.com/stretchr/testify v1.10.0
+	github.com/stretchr/testify v1.11.0
 )
 
 require (
